@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="GameLib.App/GameLib.App.csproj" />
+  <Project Path="GameLib.BL/GameLib.BL.csproj" />
+  <Project Path="GameLib.DAL/GameLib.DAL.csproj" />
+  <Project Path="GameLib.Tests/GameLib.Tests.csproj" />
+  <Project Path="solution.csproj" />
+</Solution>
