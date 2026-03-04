@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameLib.DAL.Entities
 {
-    internal record TimerEntity : IEntity
+    public record TimerEntity : IEntity
     {
         public Guid Id { get; set; }
         public TimeSpan Time { get; set; }

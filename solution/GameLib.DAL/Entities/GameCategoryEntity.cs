@@ -5,7 +5,7 @@ using GameLib.DAL.Enums;
 
 namespace GameLib.DAL.Entities
 {
-    internal record GameCategoryEntity : IEntity
+    public record GameCategoryEntity : IEntity
     {
         public Guid Id { get; set; }
         public GameCategory TypeCategory { get; set; }
