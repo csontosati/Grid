@@ -4,13 +4,13 @@ using System.Text;
 
 namespace GameLib.DAL.Entities
 {
-    // Mapping table for many-to-many relationship between Game and Category
-    public record GameCategoryEntity : IEntity
+    // Mapping table for many-to-many relationship between Library and Game
+    public record LibraryGameEntity : IEntity
     {
         public Guid Id { get; set; }
+        public Guid LibraryId { get; set; }
         public Guid GameId { get; set; }
-        public Guid CategoryId { get; set; }
         public required GameEntity Game { get; init; }
-        public required CategoryEntity Category { get; init; }
+        public required LibraryEntity Library { get; init; }
     }
 }
