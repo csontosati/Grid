@@ -9,4 +9,5 @@ public record GameEntity : IEntity
     public string?  Description { get; set; }
     public Pegi Age { get; set; }
     public required string ImageUrl { get; set; }
+    public TimerEntity Timer { get; set; }
 }
