@@ -1,6 +1,5 @@
 ﻿using GameLib.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace GameLib.DAL;
 
@@ -25,10 +24,11 @@ public class GameLibDbContext(DbContextOptions<GameLibDbContext> options) : DbCo
         modelBuilder.Entity<LibraryEntity>()
             .HasMany(l => l.Games)
             .WithMany(g => g.Libraries);
-
+        
+   
         modelBuilder.Entity<GameEntity>()
             .HasMany(g => g.Categories)
-            .WithOne();
+            .WithMany(c => c.Games);
 
         modelBuilder.Entity<GameEntity>()
             .HasMany(g => g.Timer)
