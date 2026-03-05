@@ -8,7 +8,18 @@ namespace GameLib.DAL.Factories
     public class DbContextSqLiteFactory : IDbContextFactory<GameLibDbContext>
     {
         private readonly DbContextOptionsBuilder<GameLibDbContext> _contextOptionsBuilder = new();
-        public DbContextSqLiteFactory(string databaseName) => _contextOptionsBuilder.UseSqlite(databaseName);
+
+        public DbContextSqLiteFactory(string databaseName)
+        {
+            _contextOptionsBuilder.UseSqlite($"Data source={databaseName}");
+        }
+
         public GameLibDbContext CreateDbContext() => new(_contextOptionsBuilder.Options);
+        }
+
+        }
+
+        }
+
     }
 }
