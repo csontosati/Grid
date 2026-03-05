@@ -17,9 +17,5 @@ namespace GameLib.DAL.Factories
         public GameLibDbContext CreateDbContext() => new(_contextOptionsBuilder.Options);
         }
 
-        }
 
-        }
-
-    }
 }
