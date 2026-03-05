@@ -1,20 +1,23 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# ICS Project: Game Launcher
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Introduction
+This is a semester project for the ICS course. It is a game launcher application (inspired by platforms like Steam and Epic Games) that allows users to browse various game titles and manage them within their own personal libraries. 
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+The application is built with a strong focus on clean architecture, object-oriented design, and database integration.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Architecture & Technologies
+The solution follows a multi-project, layered architecture to strictly separate concerns:
+* **App (Frontend):** .NET MAUI (Multi-platform App UI) for a cross-platform user interface.
+* **BL (Business Logic):** Contains Facades and mapping logic to translate database entities into Data Transfer Objects (DTOs).
+* **DAL (Data Access Layer):** Uses Entity Framework Core with a Code First approach to manage data persistence via a local SQLite database. All filtering, searching, and sorting are executed directly at the database level.
+* **Tests:** xUnit framework for automated Unit and Integration testing.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Getting Started
+
+### Prerequisites
+* .NET 8.0 SDK (or the version specified by your environment)
+* Visual Studio / JetBrains Rider
+* EF Core CLI tools (`dotnet tool install --global dotnet-ef`)
+
+### Database Setup
+The application uses a local SQLite database
