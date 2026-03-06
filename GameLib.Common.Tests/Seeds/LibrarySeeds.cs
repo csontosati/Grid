@@ -9,7 +9,6 @@ public static class LibrarySeeds
     {
         Id = Guid.Parse("12A41D33-12BE-4A1B-864F-7AFC3F7D3B7F"),
         Name = "LibTest1",
-        Description = "LibDesc1",
         UserId = UserSeeds.UserEntity.Id,
         Games = new List<GameEntity>()
     };
@@ -18,7 +17,6 @@ public static class LibrarySeeds
     {
         Id = Guid.Parse("554717A3-9DDE-4EF6-83E1-1063303F8CCF"),
         Name = "LibTest2",
-        Description = "LibDesc2",
         UserId = UserSeeds.UserEntity.Id,
         Games = new List<GameEntity>()
     };
