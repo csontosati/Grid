@@ -8,5 +8,4 @@
   <Project Path="GameLib.Tests/GameLib.DAL.Tests.csproj">
     <Build Solution="Debug|*" Project="false" />
   </Project>
-  <Project Path="solution.csproj" />
 </Solution>
