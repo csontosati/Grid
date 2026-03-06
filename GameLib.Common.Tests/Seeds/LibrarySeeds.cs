@@ -36,12 +36,12 @@ public static class LibrarySeeds
 
     static LibrarySeeds()
     {
-        LibraryEntity.Games.Add(GameSeeds.WitcherGame);
+        LibraryEntity.Games.Add(GameSeeds.TestGame);
     }
 
     public static DbContext SeedLibraries(this DbContext dbx)
     {
-        dbx.Set<GameEntity>().Attach(GameSeeds.WitcherGame);
+        dbx.Set<GameEntity>().Attach(GameSeeds.TestGame);
 
         var entities = new[] { LibraryEntity, LibraryEntity2, LibraryUpdate, LibraryDelete };
 

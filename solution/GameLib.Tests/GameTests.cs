@@ -10,15 +10,22 @@ namespace GameLib.DAL.Tests;
 
 public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(output)
 {
+    private async Task EnsureStudioExists()
+    {
+        if (!await GameLibDbContextSut.Studios.AnyAsync(s => s.Id == StudioSeeds.StudioEntity.Id))
+        {
+            GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+            await GameLibDbContextSut.SaveChangesAsync();
+        }
+        GameLibDbContextSut.ChangeTracker.Clear();
+    }
+
     [Fact]
     public async Task AddNew_Game_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
-        await GameLibDbContextSut.SaveChangesAsync();
-        GameLibDbContextSut.ChangeTracker.Clear();
+        await EnsureStudioExists();
 
-        GameEntity entity = GameSeeds.WitcherGame with
+        GameEntity entity = GameSeeds.TestGame with
         {
             Id = Guid.Parse("6B1677DD-2C66-4C31-8727-64BA87DD6303"),
             StudioId = StudioSeeds.StudioEntity.Id,
@@ -27,11 +34,9 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
             Timer = new List<TimerEntity>()
         };
 
-        // Act
         GameLibDbContextSut.Games.Add(entity);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games.SingleAsync(g => g.Id == entity.Id);
         DeepAssert.Equal(entity, actual);
@@ -40,68 +45,79 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task AddNew_Game_With_Categories_Persisted()
     {
-        // Arrange 
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+        await EnsureStudioExists();
+       
         GameLibDbContextSut.Categories.AddRange(CategorySeeds.ActionCategory, CategorySeeds.MMOCategory);
-
         await GameLibDbContextSut.SaveChangesAsync();
+        
+        GameLibDbContextSut.ChangeTracker.Clear();
 
-        GameEntity entity = GameSeeds.WitcherGame with
+        GameEntity entity = GameSeeds.GameWithCategories with
         {
-            Id = Guid.Parse("9682F1D0-B5E7-42D9-9339-DAD1F6921431"),
             StudioId = StudioSeeds.StudioEntity.Id,
-            Categories = new List<CategoryEntity> { CategorySeeds.ActionCategory, CategorySeeds.MMOCategory },
+            Categories = new List<CategoryEntity>(),
             Libraries = new List<LibraryEntity>(),
             Timer = new List<TimerEntity>()
         };
 
-        // Act
-        GameLibDbContextSut.Categories.AttachRange(CategorySeeds.ActionCategory, CategorySeeds.MMOCategory);
         GameLibDbContextSut.Games.Add(entity);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        // Assert
+        var cat1 = await GameLibDbContextSut.Categories.SingleAsync(c => c.Id == CategorySeeds.ActionCategory.Id);
+        var cat2 = await GameLibDbContextSut.Categories.SingleAsync(c => c.Id == CategorySeeds.MMOCategory.Id);
+
+        entity.Categories.Add(cat1);
+        entity.Categories.Add(cat2);
+        await GameLibDbContextSut.SaveChangesAsync();
+
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games
             .Include(g => g.Categories)
             .SingleAsync(g => g.Id == entity.Id);
 
-        DeepAssert.Equal(entity, actual, nameof(GameEntity.Libraries), nameof(GameEntity.Timer), nameof(GameEntity.Studio));
+        DeepAssert.Equal(entity, actual);
     }
 
     [Fact]
     public async Task AddNew_Game_With_Libraries_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+        await EnsureStudioExists();
+        
         GameLibDbContextSut.Users.Add(UserSeeds.UserEntity);
-        GameLibDbContextSut.Libraries.AddRange(LibrarySeeds.LibraryEntity, LibrarySeeds.LibraryEntity2);
+        await GameLibDbContextSut.SaveChangesAsync();
+        
+        GameLibDbContextSut.Libraries.AddRange(
+            LibrarySeeds.LibraryEntity with { Games = new List<GameEntity>()},
+            LibrarySeeds.LibraryEntity2 with { Games = new List<GameEntity>()});
 
         await GameLibDbContextSut.SaveChangesAsync();
+ 
         GameLibDbContextSut.ChangeTracker.Clear();
 
-        GameEntity entity = GameSeeds.WitcherGame with
+        GameEntity entity = GameSeeds.GameWithLibraries with
         {
-            Id = Guid.Parse("944B9394-EECC-4807-BC67-06F59FC32EF5"),
             StudioId = StudioSeeds.StudioEntity.Id,
-            Libraries = new List<LibraryEntity> { LibrarySeeds.LibraryEntity, LibrarySeeds.LibraryEntity2 },
+            Libraries = new List<LibraryEntity>(),
             Categories = new List<CategoryEntity>(),
             Timer = new List<TimerEntity>()
         };
 
-        // Act
-        GameLibDbContextSut.Libraries.AttachRange(LibrarySeeds.LibraryEntity, LibrarySeeds.LibraryEntity2);
         GameLibDbContextSut.Games.Add(entity);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        // Assert
+        var lib1 = await GameLibDbContextSut.Libraries.SingleAsync(l => l.Id == LibrarySeeds.LibraryEntity.Id);
+        var lib2 = await GameLibDbContextSut.Libraries.SingleAsync(l => l.Id == LibrarySeeds.LibraryEntity2.Id);
+
+        entity.Libraries.Add(lib1);
+        entity.Libraries.Add(lib2);
+        await GameLibDbContextSut.SaveChangesAsync();
+
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games
             .Include(g => g.Libraries)
             .SingleAsync(g => g.Id == entity.Id);
 
-        Assert.Equal(entity.Libraries.Count, actual.Libraries.Count);
-
+        Assert.Equal(2, actual.Libraries.Count);
         DeepAssert.Equal(entity, actual,
             nameof(GameEntity.Categories),
             nameof(GameEntity.Timer),
@@ -112,20 +128,18 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task AddNew_Game_With_Timers_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+        await EnsureStudioExists();
 
-        var game = GameSeeds.WitcherGame with
+        var game = GameSeeds.TestGame with
         {
+            Id = Guid.Parse("A33B9394-EECC-4807-BC67-06F59FC32EF5"),
             StudioId = StudioSeeds.StudioEntity.Id,
             Timer = new List<TimerEntity>(),
             Categories = new List<CategoryEntity>(),
             Libraries = new List<LibraryEntity>()
         };
         GameLibDbContextSut.Games.Add(game);
-
         await GameLibDbContextSut.SaveChangesAsync();
-        GameLibDbContextSut.ChangeTracker.Clear();
 
         var timer1 = new TimerEntity
         {
@@ -135,11 +149,9 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
             Date = new DateTime(2024, 1, 1)
         };
 
-        // Act
         GameLibDbContextSut.Timer.Add(timer1);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actualGame = await dbx.Games
             .Include(g => g.Timer)
@@ -150,11 +162,11 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
             nameof(GameEntity.Libraries),
             nameof(GameEntity.Studio));
     }
+
     [Fact]
     public async Task Update_Game_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+        await EnsureStudioExists();
 
         var gameToSeed = GameSeeds.GameUpdate with
         {
@@ -165,21 +177,18 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         };
         GameLibDbContextSut.Games.Add(gameToSeed);
         await GameLibDbContextSut.SaveChangesAsync();
-
         GameLibDbContextSut.ChangeTracker.Clear();
 
         var gameToUpdate = gameToSeed with
         {
             Name = "Witcher 3: Wild Hunt",
             Age = Pegi.Eighteen,
-            Studio = null! 
+            Studio = null!
         };
 
-        // Act
         GameLibDbContextSut.Games.Update(gameToUpdate);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games.SingleAsync(g => g.Id == gameToUpdate.Id);
 
@@ -193,8 +202,7 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task Delete_Game_Deletes_Associated_Timers_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+        await EnsureStudioExists();
 
         var game = GameSeeds.GameDelete with
         {
@@ -218,7 +226,6 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         await GameLibDbContextSut.SaveChangesAsync();
         GameLibDbContextSut.ChangeTracker.Clear();
 
-        // Act
         var gameToDelete = await GameLibDbContextSut.Games
             .Include(g => g.Timer)
             .SingleAsync(g => g.Id == game.Id);
@@ -226,7 +233,6 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         GameLibDbContextSut.Games.Remove(gameToDelete);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        // Assert 
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var gameExists = await dbx.Games.AnyAsync(g => g.Id == game.Id);
         var timerExists = await dbx.Timer.AnyAsync(t => t.Id == timer.Id);
@@ -238,11 +244,11 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task GetById_Game_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
+        await EnsureStudioExists();
 
-        var gameToSeed = GameSeeds.WitcherGame with
+        var gameToSeed = GameSeeds.TestGame with
         {
+            Id = Guid.Parse("F11B9394-EECC-4807-BC67-06F59FC32EF5"),
             StudioId = StudioSeeds.StudioEntity.Id,
             Studio = null!,
             Categories = new List<CategoryEntity>(),
@@ -251,14 +257,11 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         };
         GameLibDbContextSut.Games.Add(gameToSeed);
         await GameLibDbContextSut.SaveChangesAsync();
-
         GameLibDbContextSut.ChangeTracker.Clear();
 
-        // Act
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games.SingleAsync(g => g.Id == gameToSeed.Id);
 
-        // Assert
         DeepAssert.Equal(gameToSeed, actual,
             nameof(GameEntity.Categories),
             nameof(GameEntity.Libraries),
@@ -269,16 +272,20 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task GetById_IncludingCategories_Game_Persisted()
     {
-        // Arrange
-        GameLibDbContextSut.Studios.Add(StudioSeeds.StudioEntity);
-        GameLibDbContextSut.Categories.AddRange(CategorySeeds.ActionCategory, CategorySeeds.MMOCategory);
-        await GameLibDbContextSut.SaveChangesAsync();
-
-        var gameToSeed = GameSeeds.WitcherGame with
+        await EnsureStudioExists();
+        if (!await GameLibDbContextSut.Categories.AnyAsync(c => c.Id == CategorySeeds.ActionCategory.Id))
         {
+            GameLibDbContextSut.Categories.AddRange(CategorySeeds.ActionCategory, CategorySeeds.MMOCategory);
+            await GameLibDbContextSut.SaveChangesAsync();
+        }
+        GameLibDbContextSut.ChangeTracker.Clear();
+
+        var gameToSeed = GameSeeds.TestGame with
+        {
+            Id = Guid.Parse("E22B9394-EECC-4807-BC67-06F59FC32EF5"),
             StudioId = StudioSeeds.StudioEntity.Id,
             Studio = null!,
-            Categories = new List<CategoryEntity> { CategorySeeds.ActionCategory, CategorySeeds.MMOCategory },
+            Categories = new List<CategoryEntity>(),
             Libraries = new List<LibraryEntity>(),
             Timer = new List<TimerEntity>()
         };
@@ -286,15 +293,20 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         GameLibDbContextSut.Games.Add(gameToSeed);
         await GameLibDbContextSut.SaveChangesAsync();
 
+        var cat1 = await GameLibDbContextSut.Categories.SingleAsync(c => c.Id == CategorySeeds.ActionCategory.Id);
+        var cat2 = await GameLibDbContextSut.Categories.SingleAsync(c => c.Id == CategorySeeds.MMOCategory.Id);
+
+        gameToSeed.Categories.Add(cat1);
+        gameToSeed.Categories.Add(cat2);
+        await GameLibDbContextSut.SaveChangesAsync();
+
         GameLibDbContextSut.ChangeTracker.Clear();
 
-        // Act
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games
             .Include(g => g.Categories)
             .SingleAsync(g => g.Id == gameToSeed.Id);
 
-        // Assert
         DeepAssert.Equal(gameToSeed, actual,
             nameof(GameEntity.Libraries),
             nameof(GameEntity.Timer),
