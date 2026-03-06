@@ -5,6 +5,9 @@ using Xunit.Sdk;
 
 namespace GameLib.Common.Tests;
 
+
+// Deepassert functions implementation was used from official CookBook project
+// provided by this course.
 public static class DeepAssert
 {
     public static void Equal<T>(T? expected, T? actual, params string[] propertiesToIgnore)

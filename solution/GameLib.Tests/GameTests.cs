@@ -3,25 +3,21 @@ using GameLib.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using GameLib.Common.Tests;
+using GameLib.Common.Tests.Seeds;
 using Xunit.Abstractions;
 
 namespace GameLib.DAL.Tests;
 
 public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(output)
 {
-
-
     [Fact]
     public async Task AddNew_Game_Persisted()
     {
         // Arrange
-        GameEntity entity = new()
+        GameEntity entity = GameSeeds.WitcherGame with
         {
-            Id = Guid.NewGuid(),
-            Name = "Witcher3",
-            Description = "RPG game",
-            Age = Pegi.Eighteen,
-            ImageUrl = "https://www.google.com",
+            Id = Guid.Parse("6B1677DD-2C66-4C31-8727-64BA87DD6303"),
+            StudioId = StudioSeeds.StudioEntity.Id
         };
 
         // Act
@@ -31,27 +27,17 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games.SingleAsync(g => g.Id == entity.Id);
-
-        DeepAssert.Equal(entity, actual);
+        DeepAssert.Equal(entity, actual, nameof(GameEntity.Categories), nameof(GameEntity.Libraries), nameof(GameEntity.Timer));
     }
 
     [Fact]
     public async Task AddNew_Game_With_Categories_Persisted()
     {
-        // Arrange
-        var categoryAction = new CategoryEntity { Id = Guid.NewGuid(), Category = GameCategory.Action };
-        var categoryMmo = new CategoryEntity { Id = Guid.NewGuid(), Category = GameCategory.MMO };
-
-        GameLibDbContextSut.Categories.AddRange(categoryAction, categoryMmo);
-
-        GameEntity entity = new()
+        // Arrange 
+        GameEntity entity = GameSeeds.WitcherGame with
         {
-            Id = Guid.NewGuid(),
-            Name = "Witcher3",
-            Description = "RPG game",
-            Age = Pegi.Eighteen,
-            ImageUrl = "https://www.google.com",
-            Categories = new List<CategoryEntity> { categoryAction, categoryMmo }
+            Id = Guid.Parse("9682F1D0-B5E7-42D9-9339-DAD1F6921431"),
+            Categories = new List<CategoryEntity> { CategorySeeds.ActionCategory, CategorySeeds.MMOCategory }
         };
 
         // Act
@@ -70,28 +56,12 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task AddNew_Game_With_Libraries_Persisted()
     {
-        // Arrange
-        var user = new UserEntity
+        // Arrange 
+        GameEntity entity = GameSeeds.WitcherGame with
         {
-            Id = Guid.NewGuid(),
-            UserName = "Tester",
-            Email = "test@test.com"
-        };
-        GameLibDbContextSut.Users.Add(user);
 
-        await GameLibDbContextSut.SaveChangesAsync();
-
-        var library1 = new LibraryEntity { Id = Guid.NewGuid(), Name = "Lib1", UserId = user.Id };
-        var library2 = new LibraryEntity { Id = Guid.NewGuid(), Name = "Lib2", UserId = user.Id };
-
-        GameEntity entity = new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Witcher3",
-            Description = "RPG game",
-            Age = Pegi.Eighteen,
-            ImageUrl = "https://www.google.com",
-            Libraries = new List<LibraryEntity> { library1, library2 }
+            Id = Guid.Parse("944B9394-EECC-4807-BC67-06F59FC32EF5"),
+            Libraries = new List<LibraryEntity> { LibrarySeeds.LibraryEntity, LibrarySeeds.LibraryEntity2 }
         };
 
         // Act
@@ -111,102 +81,73 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     public async Task AddNew_Game_With_Timers_Persisted()
     {
         // Arrange
-        var game = new GameEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Cyberpunk 2077",
-            ImageUrl = "https://www.google.com",
-        };
-        GameLibDbContextSut.Games.Add(game);
-        await GameLibDbContextSut.SaveChangesAsync();
+        var game = GameSeeds.WitcherGame;
 
         var timer1 = new TimerEntity
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("4A7B1BE1-348B-4685-85B5-A680CA318DDB"),
             GameId = game.Id,
             Time = TimeSpan.FromHours(2),
             Date = new DateTime(2024, 1, 1)
         };
 
-        var timer2 = new TimerEntity
-        {
-            Id = Guid.NewGuid(),
-            GameId = game.Id,
-            Time = TimeSpan.FromMinutes(45),
-            Date = new DateTime(2024, 1, 2)
-        };
-
         // Act
-        GameLibDbContextSut.Timer.AddRange(timer1, timer2);
+        GameLibDbContextSut.Timer.Add(timer1);
         await GameLibDbContextSut.SaveChangesAsync();
 
         // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-
         var actualGame = await dbx.Games
             .Include(g => g.Timer)
             .SingleAsync(g => g.Id == game.Id);
 
-       DeepAssert.Equal(game,actualGame);
+        DeepAssert.Equal(game, actualGame);
     }
+
     [Fact]
     public async Task Update_Game_Persisted()
     {
-        var game = new GameEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Witcher 2",
-            Description = "Old description",
-            Age = Pegi.Sixteen,
-            ImageUrl = "https://www.freepik.com/free-photos-vectors/landscape"
-        };
-        GameLibDbContextSut.Games.Add(game);
-        await GameLibDbContextSut.SaveChangesAsync();
-
+        // Arrange
+        var game = GameSeeds.GameUpdate;
         game.Name = "Witcher 3: Wild Hunt";
         game.Age = Pegi.Eighteen;
 
+        // Act
         GameLibDbContextSut.Games.Update(game);
         await GameLibDbContextSut.SaveChangesAsync();
 
+        // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games.SingleAsync(g => g.Id == game.Id);
 
-        DeepAssert.Equal(game,actual);
+        DeepAssert.Equal(game, actual);
     }
+
     [Fact]
     public async Task Delete_Game_Deletes_Associated_Timers_Persisted()
     {
         // Arrange
-        var game = new GameEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Delete Me",
-            ImageUrl = "https://www.google.com"
-        };
-
+        var game = GameSeeds.GameDelete;
         var timer = new TimerEntity
         {
-            Id = Guid.NewGuid(),
+
+            Id = Guid.Parse("B80A1958-948A-4BC9-B487-02840B47D444"),
             GameId = game.Id,
             Time = TimeSpan.FromMinutes(30),
             Date = DateTime.Now
         };
 
-        // Act
-
-        GameLibDbContextSut.Games.Add(game);
         GameLibDbContextSut.Timer.Add(timer);
         await GameLibDbContextSut.SaveChangesAsync();
 
+        // Act
         GameLibDbContextSut.Games.Remove(game);
         await GameLibDbContextSut.SaveChangesAsync();
 
         // Assert 
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-
         var gameExists = await dbx.Games.AnyAsync(g => g.Id == game.Id);
-        var timerExists = await dbx.Timer.AnyAsync(t => t.Id == timer.Id); 
+        var timerExists = await dbx.Timer.AnyAsync(t => t.Id == timer.Id);
 
         Assert.False(gameExists);
         Assert.False(timerExists);
@@ -215,49 +156,24 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task GetById_Game_Persisted()
     {
-        // Arrange
-        var game = new GameEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "God of War",
-            ImageUrl = "https://www.google.com",
-            Age = Pegi.Eighteen
-        };
-        GameLibDbContextSut.Games.Add(game);
-        await GameLibDbContextSut.SaveChangesAsync();
-
         // Act
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-        var actual = await dbx.Games.SingleAsync(g => g.Id == game.Id);
+        var actual = await dbx.Games.SingleAsync(g => g.Id == GameSeeds.WitcherGame.Id);
 
         // Assert
-        DeepAssert.Equal(game, actual);
+        DeepAssert.Equal(GameSeeds.WitcherGame, actual);
     }
+
     [Fact]
     public async Task GetById_IncludingCategories_Game_Persisted()
     {
-        // Arrange
-        var category = new CategoryEntity { Id = Guid.NewGuid(), Category = GameCategory.Action };
-        var game = new GameEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = "Hades",
-            ImageUrl = "https://www.google.com",
-            Categories = new List<CategoryEntity> { category }
-        };
-
-        GameLibDbContextSut.Categories.Add(category);
-        GameLibDbContextSut.Games.Add(game);
-        await GameLibDbContextSut.SaveChangesAsync();
-
         // Act
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games
             .Include(g => g.Categories)
-            .SingleAsync(g => g.Id == game.Id);
+            .SingleAsync(g => g.Id == GameSeeds.WitcherGame.Id);
 
         // Assert
-        DeepAssert.Equal(game, actual);
+        DeepAssert.Equal(GameSeeds.WitcherGame, actual);
     }
 }
-
