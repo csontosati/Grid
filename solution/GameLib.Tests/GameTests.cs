@@ -121,35 +121,40 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         DeepAssert.Equal(entity, actual,
             nameof(GameEntity.Categories),
             nameof(GameEntity.Timer),
-            nameof(GameEntity.Studio),
-            nameof(GameEntity.Libraries));
+            nameof(GameEntity.Studio));
     }
 
     [Fact]
-    public async Task AddNew_Game_With_Timers_Persisted()
+    public async Task AddNew_Game_With_Multiple_Timers_Persisted()
     {
         await EnsureStudioExists();
+
+        var timers = new List<TimerEntity>
+        {
+            new()
+            {
+                Id = Guid.Parse("4A7B1BE1-348B-4685-85B5-A680CA318DDB"),
+                Time = TimeSpan.FromHours(2),
+                Date = new DateTime(2024, 1, 1)
+            },
+            new()
+            {
+                Id = Guid.Parse("7D9E2AF2-569C-4796-96C6-B791DB429EEC"),
+                Time = TimeSpan.FromMinutes(45),
+                Date = new DateTime(2024, 1, 2)
+            }
+        };
 
         var game = GameSeeds.TestGame with
         {
             Id = Guid.Parse("A33B9394-EECC-4807-BC67-06F59FC32EF5"),
             StudioId = StudioSeeds.StudioEntity.Id,
-            Timer = new List<TimerEntity>(),
+            Timer = timers,
             Categories = new List<CategoryEntity>(),
             Libraries = new List<LibraryEntity>()
         };
+
         GameLibDbContextSut.Games.Add(game);
-        await GameLibDbContextSut.SaveChangesAsync();
-
-        var timer1 = new TimerEntity
-        {
-            Id = Guid.Parse("4A7B1BE1-348B-4685-85B5-A680CA318DDB"),
-            GameId = game.Id,
-            Time = TimeSpan.FromHours(2),
-            Date = new DateTime(2024, 1, 1)
-        };
-
-        GameLibDbContextSut.Timer.Add(timer1);
         await GameLibDbContextSut.SaveChangesAsync();
 
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
@@ -157,10 +162,12 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
             .Include(g => g.Timer)
             .SingleAsync(g => g.Id == game.Id);
 
-        DeepAssert.Equal(game with { Timer = new List<TimerEntity> { timer1 } }, actualGame,
+        DeepAssert.Equal(game, actualGame,
             nameof(GameEntity.Categories),
             nameof(GameEntity.Libraries),
             nameof(GameEntity.Studio));
+
+        Assert.Equal(2, actualGame.Timer.Count);
     }
 
     [Fact]
@@ -181,7 +188,7 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
 
         var gameToUpdate = gameToSeed with
         {
-            Name = "Witcher 3: Wild Hunt",
+            Name = "Updated Game",
             Age = Pegi.Eighteen,
             Studio = null!
         };
