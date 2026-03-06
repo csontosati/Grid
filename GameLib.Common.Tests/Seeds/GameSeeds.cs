@@ -1,7 +1,6 @@
 ﻿using GameLib.DAL.Entities;
 using GameLib.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 
 namespace GameLib.Common.Tests.Seeds;
 
@@ -13,11 +12,27 @@ public static class GameSeeds
         Name = "The Witcher 3",
         Description = "RPG",
         Age = Pegi.Eighteen,
-        ImageUrl = "https://link.to/witcher",
+        ImageUrl = "https://",
         StudioId = StudioSeeds.StudioEntity.Id
     };
-    public static readonly GameEntity GameUpdate = WitcherGame with { Id = Guid.Parse("F85978E6-4B1A-4EBD-A58D-644AAE2FAEB1"), Name = "Updated Game" };
-    public static readonly GameEntity GameDelete = WitcherGame with { Id = Guid.Parse("16851B89-31DE-438C-9A7E-EA9637B8CBF4") };
+
+    
+    public static readonly GameEntity GameUpdate = WitcherGame with
+    {
+        Id = Guid.Parse("F85978E6-4B1A-4EBD-A58D-644AAE2FAEB1"),
+        Name = "Updated Game",
+        Categories = new List<CategoryEntity>(),
+        Libraries = new List<LibraryEntity>(),
+        Timer = new List<TimerEntity>()
+    };
+
+    public static readonly GameEntity GameDelete = WitcherGame with
+    {
+        Id = Guid.Parse("16851B89-31DE-438C-9A7E-EA9637B8CBF4"),
+        Categories = new List<CategoryEntity>(),
+        Libraries = new List<LibraryEntity>(),
+        Timer = new List<TimerEntity>()
+    };
 
     static GameSeeds()
     {
@@ -27,6 +42,10 @@ public static class GameSeeds
 
     public static DbContext SeedGames(this DbContext dbx)
     {
+      
+        dbx.Set<CategoryEntity>().Attach(CategorySeeds.MMOCategory);
+        dbx.Set<CategoryEntity>().Attach(CategorySeeds.ActionCategory);
+
         dbx.Set<GameEntity>().AddRange(WitcherGame, GameUpdate, GameDelete);
         return dbx;
     }

@@ -1,6 +1,7 @@
 ﻿using GameLib.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel;
 
 namespace GameLib.Common.Tests.Seeds;
 
@@ -15,14 +16,16 @@ public static class StudioSeeds
     public static readonly StudioEntity StudioEntity = new()
     {
         Id = Guid.Parse("5B4E2DF8-3D06-43CF-9ED3-2778400161A5"),
-        Name = "CD Projekt Red",
-        Description = "Witcher studio basically"
+        Name = "StudioName1",
+        Description = "StudioDesc1"
     };
 
     public static readonly StudioEntity StudioEntityUpdate = StudioEntity with
     {
         Id = Guid.Parse("A5AD7F8A-549C-4971-BAD4-9607DA407C95"),
-        Name = "Updated Studio Name"
+        Name = "StudioName2",
+        Description = "StudioDesc2"
+
     };
 
     public static readonly StudioEntity StudioEntityDelete = StudioEntity with

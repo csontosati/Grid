@@ -9,11 +9,7 @@ public class LibraryTests(ITestOutputHelper output) : DbContextTestsBase(output)
     public async Task AddNew_Library_Persisted()
     {
         // Arrange
-        LibraryEntity entity = new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "LibTest",
-        }
+        
 
     }
 }

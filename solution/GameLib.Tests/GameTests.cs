@@ -17,13 +17,15 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
         GameEntity entity = GameSeeds.WitcherGame with
         {
             Id = Guid.Parse("6B1677DD-2C66-4C31-8727-64BA87DD6303"),
-            StudioId = StudioSeeds.StudioEntity.Id
+            StudioId = StudioSeeds.StudioEntity.Id,
+            Categories = new List<CategoryEntity>(),
+            Libraries = new List<LibraryEntity>(),
+            Timer = new List<TimerEntity>()
         };
 
         // Act
         GameLibDbContextSut.Games.Add(entity);
         await GameLibDbContextSut.SaveChangesAsync();
-
         // Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
         var actual = await dbx.Games.SingleAsync(g => g.Id == entity.Id);
@@ -34,10 +36,15 @@ public class DbContextGameTests(ITestOutputHelper output) : DbContextTestsBase(o
     public async Task AddNew_Game_With_Categories_Persisted()
     {
         // Arrange 
+        GameLibDbContextSut.Categories.Attach(CategorySeeds.ActionCategory);
+        GameLibDbContextSut.Categories.Attach(CategorySeeds.MMOCategory);
+
         GameEntity entity = GameSeeds.WitcherGame with
         {
             Id = Guid.Parse("9682F1D0-B5E7-42D9-9339-DAD1F6921431"),
-            Categories = new List<CategoryEntity> { CategorySeeds.ActionCategory, CategorySeeds.MMOCategory }
+            Categories = new List<CategoryEntity> { CategorySeeds.ActionCategory, CategorySeeds.MMOCategory },
+            Libraries = new List<LibraryEntity>(),
+            Timer = new List<TimerEntity>()
         };
 
         // Act
