@@ -37,7 +37,8 @@ public class GameLibDbContext(DbContextOptions<GameLibDbContext> options) : DbCo
 
         modelBuilder.Entity<StudioEntity>()
             .HasMany(s => s.Games)
-            .WithOne();
+            .WithOne(g => g.Studio)
+            .HasForeignKey(g => g.StudioId);
     }
 
 }

@@ -6,6 +6,7 @@ public record GameEntity : IEntity
 {
     public Guid Id { get; set; }
     public Guid StudioId { get; set; }
+    public StudioEntity? Studio { get; set; }
     public required string Name { get; set; }
     public string?  Description { get; set; }
     public Pegi Age { get; set; }
