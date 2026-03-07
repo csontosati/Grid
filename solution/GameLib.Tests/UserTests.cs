@@ -85,12 +85,20 @@ public class DbContextUserTests(ITestOutputHelper output) : DbContextTestsBase(o
     [Fact]
     public async Task AddNew_User_With_Libraries_Persisted()
     {
-        var user = UserSeeds.UserEntity;
+        var user = UserSeeds.UserEntity with { Libraries = new List<LibraryEntity>() };
         GameLibDbContextSut.Users.Add(user);
         await GameLibDbContextSut.SaveChangesAsync();
 
-        var lib1 = LibrarySeeds.LibraryEntity with { UserId = user.Id };
-        var lib2 = LibrarySeeds.LibraryEntity2 with { UserId = user.Id };
+        var lib1 = LibrarySeeds.LibraryEntity with
+        {
+            UserId = user.Id,
+            Games = new List<GameEntity>()
+        };
+        var lib2 = LibrarySeeds.LibraryEntity2 with
+        {
+            UserId = user.Id,
+            Games = new List<GameEntity>()
+        };
 
         GameLibDbContextSut.Libraries.AddRange(lib1, lib2);
         await GameLibDbContextSut.SaveChangesAsync();
