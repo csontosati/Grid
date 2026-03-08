@@ -7,4 +7,5 @@ public record UserEntity : IEntity
     public required string Email { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public ICollection<LibraryEntity> Libraries { get; set; } = new List<LibraryEntity>();
 }
