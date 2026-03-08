@@ -1,5 +1,7 @@
 # ICS Project: Game Launcher
 
+## Progress: Fáze 1 – objektový návrh, databáze
+
 ## Introduction
 This is a semester project for the ICS course. It is a game launcher application (inspired by platforms like Steam and Epic Games) that allows users to browse various game titles and manage them within their own personal libraries. 
 
