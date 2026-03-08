@@ -15,7 +15,7 @@ The solution follows a multi-project, layered architecture to strictly separate 
 ## Getting Started
 
 ### Prerequisites
-* .NET 8.0 SDK (or the version specified by your environment)
+* .NET 10.0 SDK (or the version specified by your environment)
 * Visual Studio / JetBrains Rider
 * EF Core CLI tools (`dotnet tool install --global dotnet-ef`)
 
