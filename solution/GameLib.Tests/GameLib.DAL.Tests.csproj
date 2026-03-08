@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameLib.Common.Tests\GameLib.Common.Tests.csproj" />
-    <ProjectReference Include="..\GameLib.DAL\GameLib.DAL.csproj" />
+	  <ProjectReference Include="..\GameLib.Common.Tests\GameLib.Common.Tests.csproj" />
+	  <ProjectReference Include="..\GameLib.DAL\GameLib.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
