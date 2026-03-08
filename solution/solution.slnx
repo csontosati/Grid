@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/docs/">
-    <File Path="../../../../Downloads/ER-Diagram.png" />
+    <File Path="docs/GameLibDbContext.dgml" />
   </Folder>
   <Project Path="GameLib.App/GameLib.App.csproj" />
   <Project Path="GameLib.BL/GameLib.BL.csproj" />
