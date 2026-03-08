@@ -1,6 +1,5 @@
 ﻿using GameLib.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-
 namespace GameLib.DAL;
 
 public class GameLibDbContext(DbContextOptions<GameLibDbContext> options) : DbContext(options)
@@ -39,6 +38,7 @@ public class GameLibDbContext(DbContextOptions<GameLibDbContext> options) : DbCo
             .HasMany(s => s.Games)
             .WithOne(g => g.Studio)
             .HasForeignKey(g => g.StudioId);
+
     }
 
 }

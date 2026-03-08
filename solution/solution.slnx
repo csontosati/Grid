@@ -1,9 +1,9 @@
 <Solution>
-  <Folder Name="/docs/">
-    <File Path="docs/GameLibDbContext.dgml" />
-  </Folder>
-  <Project Path="GameLib.App/GameLib.App.csproj" />
+  <Project Path="GameLib.App/GameLib.App.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="GameLib.BL/GameLib.BL.csproj" />
+  <Project Path="GameLib.Common.Tests/GameLib.Common.Tests.csproj" />
   <Project Path="GameLib.DAL/GameLib.DAL.csproj" />
   <Project Path="GameLib.Tests/GameLib.DAL.Tests.csproj">
     <Build Solution="Debug|*" Project="false" />
