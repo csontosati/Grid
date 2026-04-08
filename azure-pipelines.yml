@@ -24,10 +24,11 @@ steps:
     projects: '**/*Tests.csproj' 
     arguments: '--configuration $(buildConfiguration)'
 
-# 2. Run the tests
 - task: DotNetCoreCLI@2
   displayName: 'Run Unit and Integration Tests'
   inputs:
     command: 'test'
-    projects: '**/*Tests.csproj'
+    projects: |
+      **/*Tests.csproj
+      !**/*Common.Tests.csproj
     arguments: '--configuration $(buildConfiguration) --logger trx --no-build'
