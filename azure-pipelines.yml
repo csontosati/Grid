@@ -3,38 +3,31 @@ trigger:
   - master
 
 pool:
-  # FIX 1: Change ubuntu-latest to windows-latest. 
-  # Windows servers handle MAUI UI projects much better.
-  vmImage: 'windows-latest' 
+  # Back to Linux! It's faster and we don't need Windows for the backend
+  vmImage: 'ubuntu-latest' 
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
-# Step 1: Tell the server to use .NET 10
 - task: UseDotNet@2
   displayName: 'Install .NET SDK'
   inputs:
     packageType: 'sdk'
     version: '10.x'
 
-# FIX 2: ADD THIS NEW STEP
-# This downloads the Android/MAUI tools your App project needs
-- script: dotnet workload restore
-  displayName: 'Install MAUI Workloads'
-
-# Step 3: Build the entire solution (.slnx)
+# 1. Build ONLY the Test projects (This auto-builds DAL and BL, but skips App)
 - task: DotNetCoreCLI@2
-  displayName: 'Build the Solution'
+  displayName: 'Build Backend & Tests'
   inputs:
     command: 'build'
-    projects: '**/*.slnx'
+    projects: '**/*Tests.csproj' 
     arguments: '--configuration $(buildConfiguration)'
 
-# Step 4: Find and run the xUnit tests
+# 2. Run the tests
 - task: DotNetCoreCLI@2
   displayName: 'Run Unit and Integration Tests'
   inputs:
     command: 'test'
     projects: '**/*Tests.csproj'
-    arguments: '--configuration $(buildConfiguration) --logger trx'
+    arguments: '--configuration $(buildConfiguration) --logger trx --no-build'
