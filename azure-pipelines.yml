@@ -14,14 +14,14 @@ steps:
   displayName: 'Install .NET SDK'
   inputs:
     packageType: 'sdk'
-    version: '8.x'
+    version: '10.x'
 
 # Step 2: Build the entire solution (.sln)
 - task: DotNetCoreCLI@2
   displayName: 'Build the Solution'
   inputs:
     command: 'build'
-    projects: '**/*.sln'
+    projects: '**/*.slnx'
     arguments: '--configuration $(buildConfiguration)'
 
 # Step 3: Find and run the xUnit tests
