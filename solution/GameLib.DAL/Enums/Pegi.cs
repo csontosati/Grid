@@ -2,6 +2,7 @@
 
 public enum Pegi
 {
+    None = 0,
     Three = 3,
     Seven = 7,
     Twelve = 12,

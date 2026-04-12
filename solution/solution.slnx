@@ -2,8 +2,13 @@
   <Project Path="GameLib.App/GameLib.App.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
+  <Project Path="GameLib.BL.Tests/GameLib.BL.Tests.csproj" Id="231db75e-ef14-46bf-8632-d363139a4fe0">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="GameLib.BL/GameLib.BL.csproj" />
-  <Project Path="GameLib.Common.Tests/GameLib.Common.Tests.csproj" />
+  <Project Path="GameLib.Common.Tests/GameLib.Common.Tests.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
   <Project Path="GameLib.DAL/GameLib.DAL.csproj" />
   <Project Path="GameLib.Tests/GameLib.DAL.Tests.csproj">
     <Build Solution="Debug|*" Project="false" />
