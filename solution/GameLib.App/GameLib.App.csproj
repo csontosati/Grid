@@ -82,7 +82,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\GameLib.BL\GameLib.BL.csproj" />
+	  <ProjectReference Include="..\GameLib.DAL\GameLib.DAL.csproj" />
 	</ItemGroup>
 
 </Project>
