@@ -23,7 +23,16 @@ public class LibraryModelMapper
             {
                 Id = entity.Id,
                 Name = entity.Name,
-                UserId = entity.UserId
+                UserId = entity.UserId,
+                Games = new ObservableCollection<GameListModel>(
+                    entity.Games.Select(g => new GameListModel
+                    {
+                        Id = g.Id,
+                        Name = g.Name,
+                        ImageUrl = g.ImageUrl
+                    })
+                )
+
 
             };
     public override LibraryEntity MapToEntity(LibraryDetailModel model)
