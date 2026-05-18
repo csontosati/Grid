@@ -72,4 +72,45 @@ public class LibraryFacade(
 
         await uow.CommitAsync();
     }
+    public class Filter
+    {
+        public string? Name { get; set; }
+        public Guid? UserId { get; set; }
+        public string? OrderBy { get; set; }
+    }
+
+    protected override IQueryable<LibraryEntity> ApplyFilter(
+        IQueryable<LibraryEntity> query,
+        object? filter)
+    {
+        if (filter is not Filter f)
+            return query;
+
+        if (!string.IsNullOrWhiteSpace(f.Name))
+            query = query.Where(l =>
+        l.Name.Contains(f.Name));
+
+        if (f.UserId is not null)
+            query = query.Where(l =>
+        l.UserId == f.UserId);
+
+        return query;
+    }
+
+    protected override IQueryable<LibraryEntity> ApplyOrder(
+        IQueryable<LibraryEntity> query,
+        object? filter)
+    {
+        if (filter is not Filter f || string.IsNullOrEmpty(f.OrderBy))
+            return query;
+
+        return f.OrderBy switch
+        {
+            "name" => query.OrderBy(l => l.Name),
+            "name_desc" => query.OrderByDescending(l => l.Name),
+            _ => query
+        }
+        ;
+    }
+
 }
