@@ -3,12 +3,12 @@
     x:Class="GameLib.App.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:GameLib.App"
+    xmlns:views="clr-namespace:GameLib.App.Views"
     Title="GameLib.App">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate views:GamesListView}"
+        Route="GamesListView" />
 
 </Shell>
