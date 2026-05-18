@@ -1,7 +1,5 @@
 <Solution>
-  <Project Path="GameLib.App/GameLib.App.csproj">
-    <Deploy Solution="Debug|*" />
-  </Project>
+  <Project Path="GameLib.App/GameLib.App.csproj" Id="4a8028ea-8915-44d4-b551-19d29faec01d" />
   <Project Path="GameLib.BL.Tests/GameLib.BL.Tests.csproj" Id="231db75e-ef14-46bf-8632-d363139a4fe0">
     <Build Solution="Debug|*" Project="false" />
   </Project>
