@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+             x:Class="GameLib.App.Views.GameDetailView"
+             Title="Detail hry"
+             BackgroundColor="#121212">
+
+    <Grid ColumnDefinitions="2*, *" Padding="40" ColumnSpacing="40">
+
+        <ScrollView Grid.Column="0">
+            <VerticalStackLayout Spacing="25">
+
+                <VerticalStackLayout Spacing="5">
+                    <Label d:Text="Cyberpunk 2077" FontSize="40" FontAttributes="Bold" TextColor="White" />
+                </VerticalStackLayout>
+
+
+                <Frame CornerRadius="15" Padding="0" IsClippedToBounds="True" HasShadow="False" BorderColor="Transparent">
+                    <Grid HeightRequest="300">
+                        <Image Source="game_banner_placeholder.png" Aspect="AspectFill" Opacity="0.8" />
+                        <BoxView BackgroundColor="Black" Opacity="0.2" />
+                    </Grid>
+                </Frame>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="About the game" FontSize="22" FontAttributes="Bold" TextColor="White" />
+                    <Label d:Text="Cyberpunk 2077 is an open-world, action-adventure RPG set in the megalopolis of Night City, where you play as a cyberpunk mercenary wrapped up in a do-or-die fight for survival. Improved and featuring all-new free additional content, customize your character and playstyle as you take on jobs, build a reputation, and unlock upgrades." 
+                           TextColor="#A0A0A0" FontSize="16" LineHeight="1.5" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Requirements" FontSize="20" FontAttributes="Bold" TextColor="White" />
+                    <Label d:Text="OS: Windows 10/11 64-bit&#x0a;GPU: RTX 3060 / RX 6600&#x0a;RAM: 16 GB" 
+                           TextColor="#A0A0A0" LineHeight="1.4" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Column="1" Spacing="25">
+
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="20" CornerRadius="15">
+                <VerticalStackLayout Spacing="15">
+                    <Button Text="PLAY NOW" 
+                            HeightRequest="55" CornerRadius="27"
+                            BackgroundColor="#deff9a" TextColor="Black" 
+                            FontAttributes="Bold" />
+
+                    <Button Text="ADD TO LIBRARY" 
+                            BackgroundColor="Transparent" BorderColor="#deff9a" BorderWidth="1"
+                            TextColor="#deff9a" CornerRadius="27" HeightRequest="55" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="20" CornerRadius="15">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Game Info" FontAttributes="Bold" FontSize="18" TextColor="White" Margin="0,0,0,5" />
+
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Label Grid.Column="0" Text="Released:  " TextColor="Gray" />
+                        <Label Grid.Column="1" d:Text="Dec 10, 2020" TextColor="White" HorizontalOptions="End" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto, *">
+                        <Label Grid.Column="0" Text="Genre:  " TextColor="Gray" />
+                        <Label Grid.Column="1" d:Text="RPG, Action" TextColor="White" HorizontalOptions="End" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GameLib.App.Views.GameEditView"
+             Title="Add new game"
+             BackgroundColor="#121212">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20" MaximumWidthRequest="600" HorizontalOptions="Center">
+
+            <Label Text="Add New Game" FontSize="32" FontAttributes="Bold" TextColor="White" Margin="0,0,0,10"/>
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Game Title" TextColor="#A0A0A0" FontSize="14" Margin="5,0,0,0"/>
+                <Frame BackgroundColor="#1E1E1E" Padding="15,0" HeightRequest="50" CornerRadius="10" BorderColor="#333">
+                    <Entry Placeholder="e.g. The Witcher 3" TextColor="White" PlaceholderColor="#555" />
+                </Frame>
+            </VerticalStackLayout>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="20">
+                <VerticalStackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="Studio" TextColor="#A0A0A0" FontSize="14" Margin="5,0,0,0"/>
+                    <Frame BackgroundColor="#1E1E1E" Padding="15,0" HeightRequest="50" CornerRadius="10" BorderColor="#333">
+                        <Entry Placeholder="Studio name" TextColor="White" PlaceholderColor="#555" />
+                    </Frame>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="5">
+                    <Label Text="Genre" TextColor="#A0A0A0" FontSize="14" Margin="5,0,0,0"/>
+                    <Frame BackgroundColor="#1E1E1E" Padding="15,0" HeightRequest="50" CornerRadius="10" BorderColor="#333">
+                        <Entry Placeholder="Action, RPG..." TextColor="White" PlaceholderColor="#555" />
+                    </Frame>
+                </VerticalStackLayout>
+            </Grid>
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Image URL" TextColor="#A0A0A0" FontSize="14" Margin="5,0,0,0"/>
+                <Frame BackgroundColor="#1E1E1E" Padding="15,0" HeightRequest="50" CornerRadius="10" BorderColor="#333">
+                    <Entry Placeholder="https://..." TextColor="White" PlaceholderColor="#555" />
+                </Frame>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Description" TextColor="#A0A0A0" FontSize="14" Margin="5,0,0,0"/>
+                <Frame BackgroundColor="#1E1E1E" Padding="15" HeightRequest="150" CornerRadius="10" BorderColor="#333">
+                    <Editor Placeholder="Write something about the game..." TextColor="White" PlaceholderColor="#555" AutoSize="Disabled" />
+                </Frame>
+            </VerticalStackLayout>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="20" Margin="0,20,0,0">
+                <Button Grid.Column="0" Text="CANCEL" 
+                        BackgroundColor="Transparent" BorderColor="#BD1E1E" BorderWidth="1"
+                        TextColor="#BD1E1E" CornerRadius="25" HeightRequest="50" 
+                        Clicked="OnCancelClicked" />
+
+                <Button Grid.Column="1" Text="SAVE GAME" 
+                        BackgroundColor="#deff9a" TextColor="Black" 
+                        FontAttributes="Bold" CornerRadius="25" HeightRequest="50"
+                        Clicked="OnSaveClicked" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

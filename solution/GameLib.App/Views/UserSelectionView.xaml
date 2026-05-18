@@ -1,12 +1,33 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GameLib.App.Views.UserSelectionView"
-             Title="UserSelectionView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             BackgroundColor="#121212">
+
+    <VerticalStackLayout VerticalOptions="Center" Spacing="30">
+
+        <Label Text="Who is playing?" 
+               TextColor="White" 
+               FontSize="32" 
+               HorizontalOptions="Center" />
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+
+            <VerticalStackLayout Spacing="10">
+                <ImageButton Source="dotnet_bot.png" 
+                             HeightRequest="120" WidthRequest="120" CornerRadius="60"
+                             Clicked="OnUserSelected" />
+                <Label Text="Ati (GOAT)" TextColor="White" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="10">
+                <Button Text="+" 
+                        HeightRequest="120" WidthRequest="120" CornerRadius="60"
+                        FontSize="40" BackgroundColor="#2D2D2D"
+                        Clicked="OnAddNewClicked" />
+                <Label Text="Add New" TextColor="White" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+        </HorizontalStackLayout>
+
     </VerticalStackLayout>
 </ContentPage>
