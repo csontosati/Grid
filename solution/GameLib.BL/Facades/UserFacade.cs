@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using GameLib.BL.Mappers;
+﻿using GameLib.BL.Mappers;
 using GameLib.BL.Models;
 using GameLib.BL.Facades.Interfaces;
 using GameLib.DAL.Entities;
@@ -65,7 +64,7 @@ public class UserFacade(
         };
     }
 
-    public async Task<UserDetailModel?> GetUsernameAsync(string username)
+    public async Task<UserDetailModel?> GetByUsernameAsync(string username)
     {
         await using var uow = UnitOfWorkFactory.Create();
 

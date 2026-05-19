@@ -5,7 +5,6 @@ using GameLib.DAL.Entities;
 using GameLib.DAL.Enums;
 using GameLib.DAL.Mappers;
 using GameLib.DAL.UnitOfWork;
-using System.Linq;
 
 namespace GameLib.BL.Facades;
 
