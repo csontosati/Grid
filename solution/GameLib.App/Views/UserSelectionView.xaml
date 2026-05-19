@@ -1,6 +1,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+             xmlns:models="clr-namespace:GameLib.BL.Models"
+             xmlns:models1="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
              x:Class="GameLib.App.Views.UserSelectionView"
+             x:DataType="vm:UserListViewModel"
              BackgroundColor="#121212">
 
     <VerticalStackLayout VerticalOptions="Center" Spacing="30">
@@ -10,24 +14,32 @@
                FontSize="32" 
                HorizontalOptions="Center" />
 
-        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+        <CollectionView ItemsSource="{Binding Users}" HorizontalOptions="Center">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="20"/>
+            </CollectionView.ItemsLayout>
 
-            <VerticalStackLayout Spacing="10">
-                <ImageButton Source="dotnet_bot.png" 
-                             HeightRequest="120" WidthRequest="120" CornerRadius="60"
-                             Clicked="OnUserSelected" />
-                <Label Text="Ati (GOAT)" TextColor="White" HorizontalOptions="Center" />
-            </VerticalStackLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models1:UserListModel">
+                    <VerticalStackLayout Spacing="10">
+                        <ImageButton Source="dotnet_bot.png" 
+                                     HeightRequest="120" WidthRequest="120" CornerRadius="60"
+                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=SelectUserCommand}"
+                                     CommandParameter="{Binding .}" />
 
-            <VerticalStackLayout Spacing="10">
-                <Button Text="+" 
-                        HeightRequest="120" WidthRequest="120" CornerRadius="60"
-                        FontSize="40" BackgroundColor="#2D2D2D"
-                        Clicked="OnAddNewClicked" />
-                <Label Text="Add New" TextColor="White" HorizontalOptions="Center" />
-            </VerticalStackLayout>
+                        <Label Text="{Binding Name}" TextColor="White" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-        </HorizontalStackLayout>
+        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="+" 
+                    HeightRequest="120" WidthRequest="120" CornerRadius="60"
+                    FontSize="40" BackgroundColor="#2D2D2D" TextColor="White"
+                    Command="{Binding OnAddNewClicked}" />
+            <Label Text="Add New" TextColor="White" HorizontalOptions="Center" />
+        </VerticalStackLayout>
 
     </VerticalStackLayout>
 </ContentPage>

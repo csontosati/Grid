@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameLib.App.Models;
+using GameLib.App.Views;
 
 namespace GameLib.App.Services;
 
@@ -12,9 +13,9 @@ public class NavigationService : INavigationService
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
-        new(LandingPageRouteAbsolute, typeof(LandingPage)),
-        new(LibraryPageRouteAbsolute, typeof(LibraryPage)),
-        new(UserAddRouteAbsolute, typeof(UserAddPage))
+        new(LandingPageRouteAbsolute, typeof(UserSelectionView)),
+        new(LibraryPageRouteAbsolute, typeof(LibraryView)),
+        new(UserAddRouteAbsolute, typeof(SignUpView))
 
 
     };
