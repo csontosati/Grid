@@ -3,7 +3,8 @@ namespace GameLib.App.Views;
 public partial class LibraryView : ContentPage
 {
 	public LibraryView()
-	{
+    {
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
 		InitializeComponent();
 	}
     private async void OnProfilePicClicked(object sender, EventArgs e)

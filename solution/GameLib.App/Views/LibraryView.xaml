@@ -5,6 +5,8 @@
              x:Class="GameLib.App.Views.LibraryView"
              Title="Library"
              BackgroundColor="#121212">
+             
+
 
     <Grid RowDefinitions="Auto, *" Padding="20">
 
