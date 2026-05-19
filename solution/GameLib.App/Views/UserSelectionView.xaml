@@ -37,7 +37,7 @@
             <Button Text="+" 
                     HeightRequest="120" WidthRequest="120" CornerRadius="60"
                     FontSize="40" BackgroundColor="#2D2D2D" TextColor="White"
-                    Command="{Binding OnAddNewClicked}" />
+                    Command="{Binding GoToAddUserCommand}" />
             <Label Text="Add New" TextColor="White" HorizontalOptions="Center" />
         </VerticalStackLayout>
 

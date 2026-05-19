@@ -1,3 +1,5 @@
+using GameLib.App.ViewModels;
+
 namespace GameLib.App.Views;
 
 public partial class UserSelectionView : ContentPage
@@ -5,16 +7,13 @@ public partial class UserSelectionView : ContentPage
     public UserSelectionView()
     {
         InitializeComponent();
+        BindingContext = IPlatformApplication.Current!.Services.GetService<UserListViewModel>();
     }
 
-    private async void OnUserSelected(object sender, EventArgs e)
+    protected override async void OnAppearing()
     {
-        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
-
-        await Shell.Current.GoToAsync("//LibraryView");
-    }
-    private async void OnAddNewClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(SignUpView));
+        base.OnAppearing();
+        if (BindingContext is UserListViewModel vm)
+            await vm.LoadCommand.ExecuteAsync(null);
     }
 }

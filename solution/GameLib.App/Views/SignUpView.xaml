@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GameLib.App.ViewModels"
              x:Class="GameLib.App.Views.SignUpView"
+             x:DataType="vm:SignUpViewModel"
              Title="New Account"
              BackgroundColor="#121212">
 
     <VerticalStackLayout VerticalOptions="Center" Padding="40" Spacing="20" MaximumWidthRequest="400">
+        <Label Text="New account" FontSize="32" FontAttributes="Bold" 
+               TextColor="White" HorizontalOptions="Center" Margin="0,0,0,20"/>
 
-        <Label Text="New account" FontSize="32" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Margin="0,0,0,20"/>
+        <Entry Placeholder="Email" Text="{Binding Email}"
+               BackgroundColor="#2D2D2D" TextColor="White" />
 
-        <Entry Placeholder="Email" BackgroundColor="#2D2D2D" TextColor="White" />
-        <Entry Placeholder="Username" BackgroundColor="#2D2D2D" TextColor="White" />
-        <Entry Placeholder="Name" BackgroundColor="#2D2D2D" TextColor="White" />
-        <Entry Placeholder="Surname" BackgroundColor="#2D2D2D" TextColor="White" />
+        <Entry Placeholder="Username" Text="{Binding UserName}"
+               BackgroundColor="#2D2D2D" TextColor="White" />
 
-        <Button Text="Create account" BackgroundColor="#00A8E8" TextColor="White" CornerRadius="8" Margin="0,20,0,0" />
+        <Entry Placeholder="Name" Text="{Binding FirstName}"
+               BackgroundColor="#2D2D2D" TextColor="White" />
 
+        <Entry Placeholder="Surname" Text="{Binding LastName}"
+               BackgroundColor="#2D2D2D" TextColor="White" />
+
+        <Button Text="Create account" 
+                Command="{Binding CreateAccountCommand}"
+                BackgroundColor="#00A8E8" TextColor="White" 
+                CornerRadius="8" Margin="0,20,0,0" />
     </VerticalStackLayout>
 </ContentPage>

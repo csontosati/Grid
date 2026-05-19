@@ -7,9 +7,9 @@ namespace GameLib.App.Services;
 
 public class NavigationService : INavigationService
 {
-    public const string LandingPageRouteAbsolute = "//landing";
-    public const string LibraryPageRouteAbsolute = "//library";
-    public const string UserAddRouteAbsolute = "//userAdd";
+    public const string LandingPageRouteAbsolute = "//UserSelectionView";
+    public const string LibraryPageRouteAbsolute = "//LibraryView";
+    public const string UserAddRouteAbsolute = "SignUpView";
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
