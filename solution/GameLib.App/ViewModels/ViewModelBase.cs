@@ -1,0 +1,38 @@
+﻿﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+using GameLib.App.Services;
+
+namespace GameLib.App.ViewModels;
+
+public abstract class ViewModelBase : ObservableRecipient
+{
+    private bool _forceDataRefresh = true;
+
+    protected readonly IMessengerService MessengerService;
+
+    protected ViewModelBase(IMessengerService messengerService)
+        : base(messengerService.Messenger)
+    {
+        MessengerService = messengerService;
+
+        IsActive = true;
+    }
+
+    public async Task OnAppearingAsync()
+    {
+        if (_forceDataRefresh)
+        {
+            await LoadAsync();
+
+            _forceDataRefresh = false;
+        }
+    }
+
+    protected void ForceDataRefreshOnNextAppearing()
+    {
+        _forceDataRefresh = true;
+    }
+
+    protected virtual Task LoadAsync()
+        => Task.CompletedTask;
+}
