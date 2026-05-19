@@ -78,6 +78,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\GameLib.BL\GameLib.BL.csproj" />
+	  <ProjectReference Include="..\GameLib.DAL\GameLib.DAL.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\DiscoverView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
