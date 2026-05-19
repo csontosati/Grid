@@ -1,8 +1,8 @@
 ﻿﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-using CookBook.App.Services;
+using GameLib.App.Services;
 
-namespace CookBook.App.ViewModels;
+namespace GameLib.App.ViewModels;
 
 public abstract class ViewModelBase : ObservableRecipient
 {

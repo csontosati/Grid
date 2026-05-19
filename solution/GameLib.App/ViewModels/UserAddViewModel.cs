@@ -1,70 +1,38 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using GameLib.App.Messages;
 using GameLib.App.Services;
-using GameLib.BL.Facades;
+using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Models;
+using GameLib.DAL.Entities;
 
 namespace GameLib.App.ViewModels;
 
-public partial class UserAddViewModel : ObservableObject
+public partial class UserAddViewModel(
+    IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
+    INavigationService navigationService,
+    IMessengerService messengerService) : ViewModelBase(messengerService)
 {
-    private readonly UserFacade _userFacade;
-    private readonly INavigationService _navigation;
-
     [ObservableProperty]
-    private string email;
-
-    [ObservableProperty]
-    private string username;
-
-    [ObservableProperty]
-    private string name;
-
-    [ObservableProperty]
-    private string surname;
-
-    public UserAddViewModel(UserFacade userFacade, INavigationService navigation)
-    {
-        _userFacade = userFacade;
-        _navigation = navigation;
-    }
+    public partial UserDetailModel User { get; set; } = UserDetailModel.Empty;
 
     [RelayCommand]
-    private async Task CreateAccountAsync()
+    private async Task SaveAsync()
     {
-        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Name))
+        if (string.IsNullOrWhiteSpace(User.UserName))
         {
-            await Application.Current.MainPage.DisplayAlert("Chyba", "Uživatelské jméno a Jméno jsou povinné.", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Chyba", "Username je povinný.", "OK");
             return;
         }
 
         try
         {
-            var newDetailModel = new UserDetailModel
-            {
-                UserName = Username,
-                Email = Email,
-                FirstName = Name,
-                LastName = Surname
-            };
-
-            var savedUser = await _userFacade.SaveAsync(newDetailModel);
-
-            var listItem = new UserListModel
-            {
-                Id = savedUser.Id,
-                UserName = savedUser.UserName
-            };
-
-            WeakReferenceMessenger.Default.Send(new UserAddedMessage(listItem));
-
-            await _navigation.GoToAsync("..");
+            User.Id = Guid.NewGuid();
+            await userFacade.SaveAsync(User);
+            await navigationService.GoToAsync("..");
         }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Chyba", $"Nepodařilo se vytvořit účet: {ex.Message}", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Chyba", $"Nepodarilo sa vytvoriť účet: {ex.Message}", "OK");
         }
     }
 }

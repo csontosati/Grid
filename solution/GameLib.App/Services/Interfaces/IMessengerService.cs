@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 
-namespace CookBook.App.Services;
+namespace GameLib.App.Services;
 
 public interface IMessengerService
 {

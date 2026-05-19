@@ -1,7 +1,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GameLib.App.ViewModels"
-             xmlns:models="clr-namespace:GameLib.BL.Models"
              xmlns:models1="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
              x:Class="GameLib.App.Views.UserSelectionView"
              x:DataType="vm:UserListViewModel"
@@ -27,7 +26,7 @@
                                      Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=SelectUserCommand}"
                                      CommandParameter="{Binding .}" />
 
-                        <Label Text="{Binding Name}" TextColor="White" HorizontalOptions="Center" />
+                        <Label Text="{Binding UserName}" TextColor="White" HorizontalOptions="Center" />
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
