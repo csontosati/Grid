@@ -28,8 +28,14 @@ public partial class UserListViewModel(
     }
 
     [RelayCommand]
-    private async Task GoToAddUserAsync()
+    protected async Task GoToAddUserAsync()
     {
         await navigationService.GoToAsync(NavigationService.UserAddPageRouteAbsolute);
+    }
+
+    [RelayCommand]
+    protected async Task GoToLibraryAsync()
+    {
+        await navigationService.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
     }
 }
