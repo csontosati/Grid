@@ -12,9 +12,9 @@ public class NavigationService : INavigationService
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
-        new(LandingPageRouteAbsolute, typeof(LandingPage)),
-        new(LibraryPageRouteAbsolute, typeof(LibraryPage)),
-        new(UserAddRouteAbsolute, typeof(UserAddPage))
+        new(LandingPageRouteAbsolute, typeof(int)),
+        new(LibraryPageRouteAbsolute, typeof(int)),
+        new(UserAddRouteAbsolute, typeof(int))
 
 
     };
