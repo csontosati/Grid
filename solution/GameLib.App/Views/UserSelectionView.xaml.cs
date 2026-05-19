@@ -6,6 +6,7 @@ public partial class UserSelectionView : ContentPage
 {
     public UserSelectionView()
     {
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Disabled;
         InitializeComponent();
         BindingContext = IPlatformApplication.Current!.Services.GetService<UserListViewModel>();
     }

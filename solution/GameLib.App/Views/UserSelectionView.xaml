@@ -13,32 +13,32 @@
                FontSize="32" 
                HorizontalOptions="Center" />
 
-        <CollectionView ItemsSource="{Binding Users}" HorizontalOptions="Center">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="20"/>
-            </CollectionView.ItemsLayout>
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+            <CollectionView ItemsSource="{Binding Users}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="20"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models1:UserListModel">
+                        <VerticalStackLayout Spacing="10">
+                            <ImageButton Source="dotnet_bot.png" 
+                                         HeightRequest="120" WidthRequest="120" CornerRadius="60"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=GoToLibraryCommand}"
+                                         CommandParameter="{Binding .}" />
+                            <Label Text="{Binding UserName}" TextColor="White" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models1:UserListModel">
-                    <VerticalStackLayout Spacing="10">
-                        <ImageButton Source="dotnet_bot.png" 
-                                     HeightRequest="120" WidthRequest="120" CornerRadius="60"
-                                     Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=GoToLibraryCommand}"
-                                     CommandParameter="{Binding .}" />
-
-                        <Label Text="{Binding UserName}" TextColor="White" HorizontalOptions="Center" />
-                    </VerticalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-        <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
-            <Button Text="+" 
-                    HeightRequest="120" WidthRequest="120" CornerRadius="60"
-                    FontSize="40" BackgroundColor="#2D2D2D" TextColor="White"
-                    Command="{Binding GoToAddUserCommand}" />
-            <Label Text="Add New" TextColor="White" HorizontalOptions="Center" />
-        </VerticalStackLayout>
+            <VerticalStackLayout Spacing="10">
+                <Button Text="+" 
+                        HeightRequest="120" WidthRequest="120" CornerRadius="60"
+                        FontSize="40" BackgroundColor="#2D2D2D" TextColor="White"
+                        Command="{Binding GoToAddUserCommand}" />
+                <Label Text="Add New" TextColor="White" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
 
     </VerticalStackLayout>
 </ContentPage>

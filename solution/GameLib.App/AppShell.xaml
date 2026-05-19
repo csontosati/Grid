@@ -5,6 +5,7 @@
        x:Class="GameLib.App.AppShell"
        FlyoutBehavior="Disabled"
        FlyoutBackgroundColor="#1A1A1A"
+       FlyoutWidth="200"
        Shell.NavBarIsVisible="False" 
        Title="GameLib">
 

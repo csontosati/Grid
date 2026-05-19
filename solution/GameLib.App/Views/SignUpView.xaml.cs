@@ -8,5 +8,6 @@ public partial class SignUpView : ContentPage
     {
         InitializeComponent();
         BindingContext = IPlatformApplication.Current!.Services.GetService<UserAddViewModel>();
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Disabled;
     }
 }

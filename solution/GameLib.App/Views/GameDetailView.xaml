@@ -41,19 +41,6 @@
         <VerticalStackLayout Grid.Column="1" Spacing="25">
 
             <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="20" CornerRadius="15">
-                <VerticalStackLayout Spacing="15">
-                    <Button Text="PLAY NOW" 
-                            HeightRequest="55" CornerRadius="27"
-                            BackgroundColor="#deff9a" TextColor="Black" 
-                            FontAttributes="Bold" />
-
-                    <Button Text="ADD TO LIBRARY" 
-                            BackgroundColor="Transparent" BorderColor="#deff9a" BorderWidth="1"
-                            TextColor="#deff9a" CornerRadius="27" HeightRequest="55" />
-                </VerticalStackLayout>
-            </Frame>
-
-            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="20" CornerRadius="15">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Game Info" FontAttributes="Bold" FontSize="18" TextColor="White" Margin="0,0,0,5" />
 
@@ -66,6 +53,19 @@
                         <Label Grid.Column="0" Text="Genre:  " TextColor="Gray" />
                         <Label Grid.Column="1" d:Text="RPG, Action" TextColor="White" HorizontalOptions="End" />
                     </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="20" CornerRadius="15">
+                <VerticalStackLayout Spacing="15">
+                    <Button Text="PLAY NOW" 
+                            HeightRequest="55" CornerRadius="27"
+                            BackgroundColor="#deff9a" TextColor="Black" 
+                            FontAttributes="Bold" />
+
+                    <Button Text="ADD TO LIBRARY" 
+                            BackgroundColor="Transparent" BorderColor="#deff9a" BorderWidth="1"
+                            TextColor="#deff9a" CornerRadius="27" HeightRequest="55" />
                 </VerticalStackLayout>
             </Frame>
 
