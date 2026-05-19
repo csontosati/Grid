@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameLib.App.Models;
+using GameLib.App.Services.Interfaces;
 using GameLib.App.Views;
 
 namespace GameLib.App.Services;
@@ -8,16 +9,12 @@ namespace GameLib.App.Services;
 public class NavigationService : INavigationService
 {
     public const string LandingPageRouteAbsolute = "//UserSelectionView";
-    public const string LibraryPageRouteAbsolute = "//LibraryView";
-    public const string UserAddRouteAbsolute = "SignUpView";
+    public const string UserAddPageRouteAbsolute = "/SignUpView";
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
         new(LandingPageRouteAbsolute, typeof(UserSelectionView)),
-        new(LibraryPageRouteAbsolute, typeof(LibraryView)),
-        new(UserAddRouteAbsolute, typeof(SignUpView))
-
-
+        new(LandingPageRouteAbsolute + UserAddPageRouteAbsolute, typeof(SignUpView))
     };
 
     public Task GoToAsync(string route)

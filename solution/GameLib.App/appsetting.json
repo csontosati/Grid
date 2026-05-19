@@ -1,9 +1,0 @@
-﻿{
-    "GameLib": {
-        "DAL": {
-            "DatabaseName": "gamelib.db",
-            "SeedDemoData": true,
-            "RecreateDatabaseEachTime": true
-        }
-    }
-}

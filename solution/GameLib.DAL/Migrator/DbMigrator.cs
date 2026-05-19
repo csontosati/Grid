@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameLib.DAL.Migrator;
 
-public class DbMigrator(IDbContextFactory<GameLibDbContext> dbContextFactory)
+public class DbMigrator(IDbContextFactory<GameLibDbContext> dbContextFactory) : IDbMigrator
 {
     public void Migrate()
     {

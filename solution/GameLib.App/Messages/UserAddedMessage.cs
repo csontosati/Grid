@@ -3,9 +3,6 @@ using GameLib.BL.Models;
 
 namespace GameLib.App.Messages;
 
-public class UserAddedMessage : ValueChangedMessage<UserListModel>
+public record UserAddedMessage
 {
-    public UserAddedMessage(UserListModel newUser) : base(newUser)
-    {
-    }
 }

@@ -4,6 +4,7 @@ using GameLib.BL.Mappers.Interfaces;
 using GameLib.DAL.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace CookBook.BL;
 
 public static class BLInstaller
@@ -15,7 +16,7 @@ public static class BLInstaller
         services.Scan(selector => selector
             .FromAssemblyOf<BusinessLogic>()
             .AddClasses(filter => filter.AssignableTo(typeof(IFacade<,,>)))
-            .AsMatchingInterface()
+            .AsSelfWithInterfaces()
             .WithSingletonLifetime());
 
         services.Scan(selector => selector
