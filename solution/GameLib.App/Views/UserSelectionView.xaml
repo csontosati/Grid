@@ -1,10 +1,12 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:GameLib.App.ViewModels"
-             xmlns:models1="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
-             x:Class="GameLib.App.Views.UserSelectionView"
-             x:DataType="vm:UserListViewModel"
-             BackgroundColor="#121212">
+<?xml version="1.0" encoding="utf-8" ?>
+    <views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+                       xmlns:models1="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
+                       xmlns:views="clr-namespace:GameLib.App.Views"
+                       x:Class="GameLib.App.Views.UserSelectionView"
+                       x:DataType="vm:UserListViewModel"
+                       BackgroundColor="#121212">
 
     <VerticalStackLayout VerticalOptions="Center" Spacing="30">
 
@@ -41,4 +43,4 @@
         </HorizontalStackLayout>
 
     </VerticalStackLayout>
-</ContentPage>
+</views:ContentPageBase>
