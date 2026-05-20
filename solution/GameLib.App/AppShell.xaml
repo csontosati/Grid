@@ -17,13 +17,35 @@
                    FontAttributes="Bold" 
                    TextColor="#deff9a" />
             <BoxView HeightRequest="1" 
-                     Color="#333333" 
+                     Color="#deff9a" 
                      HorizontalOptions="Fill" 
                      Margin="0,10,0,0"/>
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
-    <!-- Login View - Hidden from Flyout -->
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="FlyoutItemLayoutStyle">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#2D2D2D" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
     <ShellItem FlyoutItemIsVisible="False">
         <ShellContent
             Title="Login"
@@ -31,41 +53,19 @@
             Route="UserSelectionView" />
     </ShellItem>
 
-    <!-- Discover Menu Item with Command Support -->
     <ShellItem Title="Discover" x:Name="DiscoverItem">
         <ShellContent ContentTemplate="{DataTemplate views:DiscoverView}" 
                       Route="DiscoverView" />
     </ShellItem>
 
-    <!-- Libraries Section in Flyout Footer -->
-    <Shell.FlyoutFooter>
-        <VerticalStackLayout Padding="20,10" BackgroundColor="#1A1A1A" Spacing="5">
-            <BoxView HeightRequest="1" Color="#333333" HorizontalOptions="Fill" />
-            <Label Text="Libraries" 
-                   TextColor="#deff9a" 
-                   FontSize="12" 
-                   FontAttributes="Bold"
-                   Padding="10,8" />
-            <CollectionView ItemsSource="{Binding Libraries}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:LibraryListModel">
-                        <Frame Margin="0" Padding="0" CornerRadius="0" BorderColor="Transparent" HasShadow="False">
-                            <Grid Padding="0" BackgroundColor="Transparent">
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type Shell}}, Path=BindingContext.SelectLibraryCommand}"
-                                        CommandParameter="{Binding .}" />
-                                </Grid.GestureRecognizers>
-                                <Label Text="{Binding Name}"
-                                       TextColor="White" 
-                                       FontSize="15"
-                                       Padding="20,8,20,8" />
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </Shell.FlyoutFooter>
+    <FlyoutItem FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate views:LibraryView}"
+                      Route="LibraryView" />
+    </FlyoutItem>
+
+    <FlyoutItem FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate views:UserSettingsView}"
+                      Route="UserSettingsView" />
+    </FlyoutItem>
 
 </Shell>

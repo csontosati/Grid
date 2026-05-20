@@ -45,5 +45,28 @@ public partial class UserSettingsViewModel(
         ForceDataRefreshOnNextAppearing();
     }
 
+    [RelayCommand]
+    private async Task SignOutAsync()
+    {
+        await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
+    }
+
+    [RelayCommand]
+    private async Task SaveUserAsync()
+    {
+        await userFacade.SaveAsync(User);
+    }
+
+    [RelayCommand]
+    private async Task DeleteAccountAsync()
+    {
+        if (UserId == Guid.Empty) return;
+        await userFacade.DeleteAsync(UserId);
+        await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
+    }
+
+ 
+
+
 
 }

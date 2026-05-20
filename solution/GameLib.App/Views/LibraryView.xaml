@@ -5,7 +5,8 @@
                        xmlns:views="clr-namespace:GameLib.App.Views"
                        xmlns:vm="clr-namespace:GameLib.App.ViewModels"
                        x:Class="GameLib.App.Views.LibraryView"
-                       x:DataType="vm:GameListViewModel">
+                       x:DataType="vm:GameListViewModel"
+                       BackgroundColor="#121212">
 
     <Grid RowDefinitions="Auto, *" Padding="10">
 
