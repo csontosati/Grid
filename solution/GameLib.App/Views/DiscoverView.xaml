@@ -6,7 +6,7 @@
              Title="Discover"
              BackgroundColor="#121212">
 
-    <Grid RowDefinitions="Auto, *" Padding="20">
+    <Grid RowDefinitions="Auto, *" Padding="10">
 
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto" Margin="0,0,0,20">
 
@@ -54,12 +54,12 @@
 
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="3" 
-                                 HorizontalItemSpacing="20" VerticalItemSpacing="20" />
+                                 HorizontalItemSpacing="10" VerticalItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame CornerRadius="12" Padding="0" IsClippedToBounds="True" BackgroundColor="#2D2D2D" BorderColor="Transparent">
+                    <Frame CornerRadius="12" Padding="0" IsClippedToBounds="True" BackgroundColor="#2D2D2D" BorderColor="Transparent" HeightRequest="260">
                         <Grid RowDefinitions="180, Auto">
 
                             <BoxView Grid.Row="0" Color="#404040" />

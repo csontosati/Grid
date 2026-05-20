@@ -4,6 +4,7 @@ public partial class GameDetailView : ContentPage
 {
 	public GameDetailView()
 	{
-		InitializeComponent();
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
+        InitializeComponent();
 	}
 }

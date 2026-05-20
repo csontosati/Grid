@@ -4,7 +4,8 @@ public partial class LibraryView : ContentPage
 {
 	public LibraryView()
 	{
-		InitializeComponent();
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
+        InitializeComponent();
 	}
     private async void OnProfilePicClicked(object sender, EventArgs e)
     {

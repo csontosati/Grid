@@ -2,26 +2,90 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GameLib.App.Views.UserSettingsView"
-             Title="Profile Settings"
+             Title=""
              BackgroundColor="#121212">
 
-    <VerticalStackLayout VerticalOptions="Center" Padding="40" Spacing="20" MaximumWidthRequest="400">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="20">
 
-        <Label Text="Profile Settings" FontSize="32" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" Margin="0,0,0,20"/>
-
-        <Entry Placeholder="Username" Text="Ati_GOAT" BackgroundColor="#2D2D2D" TextColor="White" />
-        <Entry Placeholder="Email" Text="ati@goat.com" BackgroundColor="#2D2D2D" TextColor="White" />
-
-        <Button Text="Save Changes" 
-                BackgroundColor="#00A8E8" 
-                TextColor="White" 
-                CornerRadius="8" />
-
-        <Button Text="Sign Out" 
-                BackgroundColor="#BD1E1E" 
-                TextColor="White" 
-                CornerRadius="8" 
-                Margin="0,40,0,0"
+        <Button Grid.Row="0"
+                Text="Sign Out"
+                BackgroundColor="#2D2D2D"
+                TextColor="White"
+                CornerRadius="8"
+                HorizontalOptions="End"
+                Padding="20,10"
                 Clicked="OnSignOutClicked" />
-    </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20" Padding="0,20">
+
+                <Label Text="Profile Settings"
+                       FontSize="32" FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Entry Grid.Column="0" Placeholder="Email" Text="v0id_walker@gmail.com"
+                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                    <Entry Grid.Column="1" Placeholder="Username" Text="v0id_Walker"
+                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Entry Grid.Column="0" Placeholder="First Name" Text="Void"
+                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                    <Entry Grid.Column="1" Placeholder="Last Name" Text="Walker"
+                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                </Grid>
+
+                <VerticalStackLayout Spacing="10">
+
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Entry Grid.Column="0" Placeholder="Library name" Text="Library"
+                               BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                        <Button Grid.Column="1" Text="X"
+                                BackgroundColor="#BD1E1E" TextColor="White"
+                                CornerRadius="8" WidthRequest="45" />
+                        <Button Grid.Column="2" Text="✓"
+                                BackgroundColor="#2D2D2D" TextColor="White"
+                                CornerRadius="8" WidthRequest="45" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Entry Grid.Column="0" Placeholder="Library name" Text="Library2"
+                               BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                        <Button Grid.Column="1" Text="X"
+                                BackgroundColor="#BD1E1E" TextColor="White"
+                                CornerRadius="8" WidthRequest="45" />
+                        <BoxView Grid.Column="2" WidthRequest="45" Color="Transparent" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                        <Entry Grid.Column="0" Placeholder="Library name" Text="Library3"
+                               BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                        <Button Grid.Column="1" Text="X"
+                                BackgroundColor="#BD1E1E" TextColor="White"
+                                CornerRadius="8" WidthRequest="45" />
+                        <BoxView Grid.Column="2" WidthRequest="45" Color="Transparent" />
+                    </Grid>
+
+                    <Label Text="Create new Library +"
+                           TextColor="#A0A0A0"
+                           Margin="0,5,0,0" />
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="2"
+                Text="Delete Account"
+                BackgroundColor="#BD1E1E"
+                TextColor="White"
+                CornerRadius="8"
+                HorizontalOptions="End"
+                Padding="20,10"
+                Margin="0,10,0,0" />
+
+    </Grid>
 </ContentPage>
