@@ -40,16 +40,16 @@ public partial class GameListViewModel(
     public void Receive(UserSelectedMessage message)
     {
         _currentUserId = message.UserId;
+        System.Diagnostics.Debug.WriteLine($"UserSelectedMessage received: UserId = {_currentUserId}");
     }
+
 
     [RelayCommand]
     private async Task GoToUserSettingsAsync()
     {
         if (_currentUserId == Guid.Empty) return;
 
-        await navigationService.GoToDataAsync(
-            NavigationService.UserSettingsPageAbsolute, 
-            new Dictionary<string, object?> { { "UserId", _currentUserId } });
+        await navigationService.GoToAsync(NavigationService.UserSettingsPageAbsolute);
     }
     
 }

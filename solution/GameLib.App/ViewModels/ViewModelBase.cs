@@ -1,12 +1,14 @@
-﻿﻿using CommunityToolkit.Mvvm.ComponentModel;
-
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using GameLib.App.Services;
+using System.Threading.Tasks;
+using Microsoft.Maui.ApplicationModel; // ak potrebuješ MainThread
 
 namespace GameLib.App.ViewModels;
 
 public abstract class ViewModelBase : ObservableRecipient
 {
     private bool _forceDataRefresh = true;
+    private bool _initialized;
 
     protected readonly IMessengerService MessengerService;
 
@@ -14,7 +16,6 @@ public abstract class ViewModelBase : ObservableRecipient
         : base(messengerService.Messenger)
     {
         MessengerService = messengerService;
-
         IsActive = true;
     }
 
@@ -23,7 +24,6 @@ public abstract class ViewModelBase : ObservableRecipient
         if (_forceDataRefresh)
         {
             await LoadAsync();
-
             _forceDataRefresh = false;
         }
     }
@@ -32,6 +32,7 @@ public abstract class ViewModelBase : ObservableRecipient
     {
         _forceDataRefresh = true;
     }
+
 
     protected virtual Task LoadAsync()
         => Task.CompletedTask;

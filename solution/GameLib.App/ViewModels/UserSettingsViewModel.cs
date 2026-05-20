@@ -14,12 +14,11 @@ using GameLib.DAL.Entities;
 
 namespace GameLib.App.ViewModels;
 
-[QueryProperty(nameof(UserId), nameof(UserId))]
 public partial class UserSettingsViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     LibraryFacade libraryFacade,
     IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>, IQueryAttributable
+    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>
 {
     [ObservableProperty]
     public partial Guid UserId { get; set; }
@@ -46,33 +45,5 @@ public partial class UserSettingsViewModel(
         ForceDataRefreshOnNextAppearing();
     }
 
-    // Called when QueryProperty sets UserId via Shell navigation
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        if (query == null) return;
-
-        if (query.TryGetValue("UserId", out var idObj))
-        {
-            if (idObj is Guid guid)
-            {
-                UserId = guid;
-                ForceDataRefreshOnNextAppearing();
-            }
-            else if (Guid.TryParse(idObj?.ToString(), out var parsed))
-            {
-                UserId = parsed;
-                ForceDataRefreshOnNextAppearing();
-            }
-        }
-    }
-
-    // Partial callback invoked by CommunityToolkit when UserId changes
-    partial void OnUserIdChanged(Guid value)
-    {
-        if (value != Guid.Empty)
-        {
-            ForceDataRefreshOnNextAppearing();
-        }
-    }
 
 }
