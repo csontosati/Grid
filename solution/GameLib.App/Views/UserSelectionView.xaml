@@ -26,7 +26,7 @@
                             <ImageButton Source="dotnet_bot.png"
                                          HeightRequest="120" WidthRequest="120" CornerRadius="60"
                                          Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=GoToLibraryCommand}"
-                                         CommandParameter="{Binding .}" />
+                                         CommandParameter="{Binding }" />
                             <Label Text="{Binding UserName}" TextColor="White" HorizontalOptions="Center" />
                         </VerticalStackLayout>
                     </DataTemplate>

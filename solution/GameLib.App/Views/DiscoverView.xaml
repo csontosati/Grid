@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
-             x:Class="GameLib.App.Views.DiscoverView"
-             Title="Discover"
-             BackgroundColor="#121212">
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+                       xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+                       xmlns:models="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
+                       xmlns:views="clr-namespace:GameLib.App.Views"
+                       x:Class="GameLib.App.Views.DiscoverView"
+                       x:DataType="vm:GameListViewModel"
+                       Title="Discover"
+                       BackgroundColor="#121212">
 
     <Grid RowDefinitions="Auto, *" Padding="10">
 
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto" Margin="0,0,0,20">
-
             <Label Grid.Column="0" 
                    Text="Discover" 
                    FontSize="32" 
@@ -26,7 +29,7 @@
                     HeightRequest="40"
                     Margin="0,0,20,0"
                     VerticalOptions="Center"
-                    Clicked="OnAddGameClicked" />
+                    Command="{Binding GoToAddGameCommand}" />
 
             <ImageButton Grid.Column="2" 
                          Source="profile_placeholder.png" 
@@ -34,47 +37,33 @@
                          HeightRequest="40" 
                          CornerRadius="20" 
                          VerticalOptions="Center"
-                         Clicked="OnProfilePicClicked" />
+                         Command="{Binding GoToProfileCommand}" />
         </Grid>
 
         <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Games}"
                         SelectionMode="Single"
-                        SelectionChanged="OnGameSelected">
-
-            <d:CollectionView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Store Hra 1</x:String>
-                    <x:String>Store Hra 2</x:String>
-                    <x:String>Store Hra 3</x:String>
-                    <x:String>Store Hra 4</x:String>
-                    <x:String>Store Hra 5</x:String>
-                    <x:String>Store Hra 6</x:String>
-                </x:Array>
-            </d:CollectionView.ItemsSource>
-
+                        SelectedItem="{Binding SelectedGame, Mode=TwoWay}">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="3" 
                                  HorizontalItemSpacing="10" VerticalItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:GameListModel">
                     <Frame CornerRadius="12" Padding="0" IsClippedToBounds="True" BackgroundColor="#2D2D2D" BorderColor="Transparent" HeightRequest="260">
                         <Grid RowDefinitions="180, Auto">
-
-                            <BoxView Grid.Row="0" Color="#404040" />
-                            <Label Grid.Row="0" d:Text="Picture" TextColor="#777" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Image Grid.Row="0" Source="{Binding ImageUrl}" Aspect="AspectFill" />
+                            <Label Grid.Row="0" Text=" " />
+                            <!-- placeholder if no image -->
 
                             <VerticalStackLayout Grid.Row="1" Padding="15">
-                                <Label d:Text="Available Title" TextColor="White" FontAttributes="Bold" FontSize="16" />
-                                <Label d:Text="Publisher Studio" TextColor="#A0A0A0" FontSize="12" Margin="0,5,0,0" />
+                                <Label Text="{Binding Name}" TextColor="White" FontAttributes="Bold" FontSize="16" />
                             </VerticalStackLayout>
-
                         </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
         </CollectionView>
     </Grid>
-</ContentPage>
+</views:ContentPageBase>
