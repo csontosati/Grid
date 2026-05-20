@@ -58,19 +58,9 @@
                       Route="DiscoverView" />
     </FlyoutItem>
 
-    <Shell.FlyoutFooter>
-        <VerticalStackLayout Padding="20,10" BackgroundColor="#1A1A1A" Spacing="5">
-            <BoxView HeightRequest="1" Color="#333333" HorizontalOptions="Fill" />
-            <CollectionView ItemsSource="{Binding Libraries}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:LibraryListModel">
-                        <Label Text="{Binding Name}"
-                               TextColor="White" FontSize="15"
-                               Padding="10,8" />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </Shell.FlyoutFooter>
+    <FlyoutItem FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate views:LibraryView}"
+                      Route="LibraryView" />
+    </FlyoutItem>
 
 </Shell>

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.BL.Facades;
@@ -30,5 +31,12 @@ public partial class AppShellViewModel(
     {
         _currentUserId = message.UserId;
         ForceDataRefreshOnNextAppearing();
+    }
+
+    [RelayCommand]
+    private async Task GoToLibraryAsync(LibraryListModel library)
+    {
+        MessengerService.Send(new LibrarySelectedMessage(library.Id));
+        await Shell.Current.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
     }
 }

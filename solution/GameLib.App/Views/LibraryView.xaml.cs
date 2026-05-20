@@ -1,12 +1,15 @@
+using GameLib.App.ViewModels;
+
 namespace GameLib.App.Views;
 
-public partial class LibraryView : ContentPage
+public partial class LibraryView : ContentPageBase
 {
-	public LibraryView()
-	{
+    public LibraryView(LibraryViewModel viewModel) : base(viewModel)
+    {
         Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
         InitializeComponent();
-	}
+    }
+
     private async void OnProfilePicClicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(UserSettingsView));
@@ -17,7 +20,6 @@ public partial class LibraryView : ContentPage
         if (e.CurrentSelection.FirstOrDefault() != null)
         {
             await Shell.Current.GoToAsync(nameof(GameDetailView));
-
             ((CollectionView)sender).SelectedItem = null;
         }
     }
