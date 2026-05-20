@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
+using GameLib.App.Views;
 using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Models;
 using GameLib.DAL.Entities;
@@ -13,10 +14,12 @@ public partial class GameListViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
-: ViewModelBase(messengerService), IRecipient<GameAddedMessage>
+: ViewModelBase(messengerService), IRecipient<GameAddedMessage>, IRecipient<UserSelectedMessage>
 {
     [ObservableProperty]
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
+
+    public Guid UserId { get; set; }
 
     [RelayCommand]
     protected override async Task LoadAsync()
@@ -34,4 +37,19 @@ public partial class GameListViewModel(
     {
         ForceDataRefreshOnNextAppearing();
     }
+    public void Receive(UserSelectedMessage message)
+    {
+        UserId = message.UserId;
+    }
+
+    [RelayCommand]
+    private async Task GoToUserSettingsAsync()
+    {
+        if (UserId == Guid.Empty) return;
+
+        await navigationService.GoToDataAsync(
+            NavigationService.UserSettingsPageAbsolute, 
+            new Dictionary<string, object?> { { "UserId", UserId } });
+    }
+    
 }
