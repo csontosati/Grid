@@ -11,7 +11,7 @@ public interface IFacade<TEntity, TListModel, TDetailModel>
 {
     Task DeleteAsync(Guid id);
 
-    Task<TDetailModel?> GetAsync(Guid id);
+    Task<TDetailModel> GetAsync(Guid id);
     Task<IEnumerable<TListModel>> GetAsync(object? filter = null);
 
     Task<TDetailModel> SaveAsync(TDetailModel model);

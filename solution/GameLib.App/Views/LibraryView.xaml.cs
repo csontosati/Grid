@@ -11,10 +11,6 @@ public partial class LibraryView : ContentPageBase
         InitializeComponent();
     }
 
-    private async void OnProfilePicClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(NavigationService.UserSettingsPageRoute);
-    }
 
     private async void OnGameSelected(object sender, SelectionChangedEventArgs e)
     {

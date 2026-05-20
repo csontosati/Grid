@@ -17,7 +17,7 @@ public partial class AppShellViewModel(
 
     public ObservableCollection<LibraryListModel> Libraries { get; } = new();
 
-    protected override async Task LoadAsync()
+    protected override async Task LoadDataAsync()
     {
         if (_currentUserId == Guid.Empty) return;
 
@@ -37,6 +37,6 @@ public partial class AppShellViewModel(
     private async Task GoToLibraryAsync(LibraryListModel library)
     {
         MessengerService.Send(new LibrarySelectedMessage(library.Id));
-        await Shell.Current.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
+        await Shell.Current.GoToAsync(NavigationService.LibraryPageRouteRelative);
     }
 }

@@ -5,28 +5,35 @@ using GameLib.App.Services;
 using GameLib.BL.Facades;
 using GameLib.BL.Models;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
+using GameLib.App.Services.Interfaces;
 
 namespace GameLib.App.ViewModels;
 
+[QueryProperty(nameof(UserId), nameof(UserId))]
 public partial class LibraryViewModel(
+    GameFacade gameFacade,
     LibraryFacade libraryFacade,
-    IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<LibrarySelectedMessage>
+    IMessengerService messengerService,
+    INavigationService navigationService)
+    : ViewModelBase(messengerService)
 {
-    private Guid _currentLibraryId = Guid.Empty;
+    public Guid UserId { get; set; }
 
     [ObservableProperty]
-    private LibraryDetailModel? _currentLibrary;
+    private partial IEnumerable<GameListModel> Games { get; set; }
 
-    public void Receive(LibrarySelectedMessage message)
+    protected override async Task LoadDataAsync()
     {
-        _currentLibraryId = message.LibraryId;
-        ForceDataRefreshOnNextAppearing();
+        await base.LoadDataAsync();
+
+        gameFacade.GetAsync()
     }
 
-    protected override async Task LoadAsync()
+    [RelayCommand]
+    private async Task GoToUserSettingsAsync()
     {
-        if (_currentLibraryId == Guid.Empty) return;
-        CurrentLibrary = await libraryFacade.GetAsync(_currentLibraryId);
+        var navigationParameters = new Dictionary<string, object?> { [nameof(UserSettingsViewModel.UserId)] = UserId };
+        await navigationService.GoToAsync(NavigationService.UserSettingsPageRouteRelative, navigationParameters);
     }
 }

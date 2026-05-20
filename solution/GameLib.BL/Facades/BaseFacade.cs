@@ -58,7 +58,7 @@ public abstract class
         }
     }
 
-    public virtual async Task<TDetailModel?> GetAsync(Guid id)
+    public virtual async Task<TDetailModel> GetAsync(Guid id)
     {
         await using IUnitOfWork uow = UnitOfWorkFactory.Create();
 

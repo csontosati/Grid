@@ -5,6 +5,7 @@
              xmlns:models="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
              x:Class="GameLib.App.Views.UserSettingsView"
              x:DataType="vm:UserSettingsViewModel"
+             x:Name="UserSettingsViewRoot"
              Title=""
              BackgroundColor="#121212">
 
@@ -29,19 +30,19 @@
 
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <Entry Grid.Column="0" Placeholder="Email"
-                           Text="{Binding User.Email}"
+                           Text="{Binding User.Email, Mode=TwoWay}"
                            BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
                     <Entry Grid.Column="1" Placeholder="Username"
-                           Text="{Binding User.UserName}"
+                           Text="{Binding User.UserName, Mode=TwoWay}"
                            BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
                 </Grid>
 
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <Entry Grid.Column="0" Placeholder="First Name"
-                           Text="{Binding User.FirstName}"
+                           Text="{Binding User.FirstName, Mode=TwoWay}"
                            BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
                     <Entry Grid.Column="1" Placeholder="Last Name"
-                           Text="{Binding User.LastName}"
+                           Text="{Binding User.LastName, Mode=TwoWay}"
                            BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
                 </Grid>
 
@@ -59,7 +60,7 @@
                        FontSize="24" FontAttributes="Bold"
                        TextColor="White" />
 
-                <CollectionView ItemsSource="{Binding User.Libraries}">
+                <CollectionView ItemsSource="{Binding Libraries}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:LibraryListModel">
                             <Grid ColumnDefinitions="*,Auto" Padding="0,5">

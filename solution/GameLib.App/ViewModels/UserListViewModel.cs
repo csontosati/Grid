@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
 using GameLib.BL.Facades.Interfaces;
@@ -18,23 +17,22 @@ public partial class UserListViewModel(
     [ObservableProperty]
     public partial IEnumerable<UserListModel> Users { get; set; } = [];
 
-    [RelayCommand]
-    protected override async Task LoadAsync()
+    protected override async Task LoadDataAsync()
     {
-        await base.LoadAsync();
+        await base.LoadDataAsync();
         Users = await userFacade.GetAsync();
     }
 
     [RelayCommand]
     private async Task GoToAddUserAsync()
     {
-        await navigationService.GoToAsync(NavigationService.UserAddPageRouteAbsolute);
+        await navigationService.GoToAsync(NavigationService.UserAddPageRouteRelative);
     }
 
     [RelayCommand]
-    private async Task GoToLibraryAsync(UserListModel user)
+    private async Task GoToLibraryAsync(Guid userId)
     {
-        MessengerService.Send(new UserSelectedMessage(user.Id));
-        await navigationService.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
+        var navigationParameters = new Dictionary<string, object?> { [nameof(LibraryViewModel.UserId)] = userId };
+        await navigationService.GoToAsync(NavigationService.LibraryPageRouteRelative, navigationParameters);
     }
 }

@@ -3,7 +3,10 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
                        xmlns:views="clr-namespace:GameLib.App.Views"
+                       xmlns:vm="clr-namespace:GameLib.App.ViewModels"
                        x:Class="GameLib.App.Views.LibraryView"
+                       x:DataType="vm:LibraryViewModel"
+                       x:Name="LibraryViewRoot"
                        Title="Library"
                        BackgroundColor="#121212">
 
@@ -24,7 +27,7 @@
                          HeightRequest="40" 
                          CornerRadius="20" 
                          VerticalOptions="Center"
-                         Clicked="OnProfilePicClicked" />
+                         Command="{Binding Source={x:Reference LibraryViewRoot}, Path=BindingContext.GoToUserSettingsCommand}"/>
         </Grid>
 
         <CollectionView Grid.Row="1"

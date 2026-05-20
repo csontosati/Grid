@@ -6,6 +6,7 @@
                        xmlns:views="clr-namespace:GameLib.App.Views"
                        x:Class="GameLib.App.Views.UserSelectionView"
                        x:DataType="vm:UserListViewModel"
+                       x:Name="UserListViewRoot"
                        BackgroundColor="#121212">
 
     <VerticalStackLayout VerticalOptions="Center" Spacing="30">
@@ -25,8 +26,8 @@
                         <VerticalStackLayout Spacing="10">
                             <ImageButton Source="dotnet_bot.png"
                                          HeightRequest="120" WidthRequest="120" CornerRadius="60"
-                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserListViewModel}}, Path=GoToLibraryCommand}"
-                                         CommandParameter="{Binding .}" />
+                                         Command="{Binding Source={x:Reference UserListViewRoot}, Path=BindingContext.GoToLibraryCommand}"
+                                         CommandParameter="{Binding Id}" />
                             <Label Text="{Binding UserName}" TextColor="White" HorizontalOptions="Center" />
                         </VerticalStackLayout>
                     </DataTemplate>

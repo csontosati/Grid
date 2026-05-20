@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
 using GameLib.App.Services;
+using GameLib.App.Services.Interfaces;
 using GameLib.BL.Facades;
 using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Models;
@@ -10,53 +11,50 @@ using GameLib.DAL.Entities;
 
 namespace GameLib.App.ViewModels;
 
+[QueryProperty(nameof(UserId), nameof(UserId))]
 public partial class UserSettingsViewModel(
-    IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
+    UserFacade userFacade,
     LibraryFacade libraryFacade,
-    IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>
+    IMessengerService messengerService,
+    INavigationService navigationService)
+    : ViewModelBase(messengerService)
 {
-    private Guid _currentUserId = Guid.Empty;
+    public Guid UserId { get; set; }
 
     [ObservableProperty]
-    public partial UserDetailModel? User { get; set; }
+    public required partial UserDetailModel User { get; set; }
+
+    [ObservableProperty] 
+    public partial IEnumerable<LibraryListModel> Libraries { get; set; }
 
     [ObservableProperty]
     public partial string NewLibraryName { get; set; } = string.Empty;
 
-    public void Receive(UserSelectedMessage message)
+    protected override async Task LoadDataAsync()
     {
-        _currentUserId = message.UserId;
-        ForceDataRefreshOnNextAppearing();
-        MainThread.BeginInvokeOnMainThread(async () => await LoadAsync());
-    }
-
-    [RelayCommand]
-    protected override async Task LoadAsync()
-    {
-        if (_currentUserId == Guid.Empty) return;
-        User = await userFacade.GetAsync(_currentUserId);
+        await base.LoadDataAsync();
+        User = await userFacade.GetAsync(UserId);
+        Libraries = await libraryFacade.GetByUserAsync(UserId);
     }
 
     [RelayCommand]
     private async Task SignOutAsync()
     {
-        await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
+        await navigationService.GoToAsync(NavigationService.LandingPageRouteAbsolute);
     }
 
     [RelayCommand]
     private async Task SaveUserAsync()
     {
-        if (User is null) return;
         await userFacade.SaveAsync(User);
     }
 
     [RelayCommand]
     private async Task DeleteAccountAsync()
     {
-        if (_currentUserId == Guid.Empty) return;
-        await userFacade.DeleteAsync(_currentUserId);
-        await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
+        if (UserId == Guid.Empty) return;
+        await userFacade.DeleteAsync(UserId);
+        await navigationService.GoToAsync(NavigationService.LandingPageRouteAbsolute);
     }
 
     [RelayCommand]
@@ -67,12 +65,12 @@ public partial class UserSettingsViewModel(
         {
             Id = Guid.Empty,
             Name = NewLibraryName,
-            UserId = _currentUserId
+            UserId = UserId
         };
         await libraryFacade.SaveAsync(library);
         NewLibraryName = string.Empty;
         ForceDataRefreshOnNextAppearing();
-        await LoadAsync();
+        await base.LoadDataAsync();
     }
 
     [RelayCommand]

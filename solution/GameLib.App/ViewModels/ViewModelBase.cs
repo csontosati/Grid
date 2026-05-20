@@ -22,7 +22,7 @@ public abstract class ViewModelBase : ObservableRecipient
     {
         if (_forceDataRefresh)
         {
-            await LoadAsync();
+            await LoadDataAsync();
 
             _forceDataRefresh = false;
         }
@@ -33,6 +33,6 @@ public abstract class ViewModelBase : ObservableRecipient
         _forceDataRefresh = true;
     }
 
-    protected virtual Task LoadAsync()
+    protected virtual Task LoadDataAsync()
         => Task.CompletedTask;
 }
