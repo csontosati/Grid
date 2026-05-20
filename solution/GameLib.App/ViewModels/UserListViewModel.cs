@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
@@ -13,7 +14,7 @@ public partial class UserListViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : ViewModelBase(messengerService)
+    : ViewModelBase(messengerService), IRecipient<UserAddedMessage>
 {
     [ObservableProperty]
     public partial IEnumerable<UserListModel> Users { get; set; } = [];
@@ -36,5 +37,10 @@ public partial class UserListViewModel(
     {
         MessengerService.Send(new UserSelectedMessage(user.Id));
         await navigationService.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
+    }
+
+    public void Receive(UserAddedMessage message)
+    {
+        ForceDataRefreshOnNextAppearing();
     }
 }

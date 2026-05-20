@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
 using GameLib.BL.Facades.Interfaces;
@@ -27,13 +28,17 @@ public partial class UserAddViewModel(
 
         try
         {
+            
             User.Id = Guid.NewGuid();
             await userFacade.SaveAsync(User);
             navigationService.SendBackButtonPressed();
+            messengerService.Send(new UserAddedMessage());
         }
         catch (Exception ex)
         {
             await Application.Current!.MainPage!.DisplayAlert("Error", $"Account Creation Unsuccessful: {ex.Message}", "OK");
         }
+
+        
     }
 }

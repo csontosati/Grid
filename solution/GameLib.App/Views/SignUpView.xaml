@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:GameLib.App.ViewModels"
              x:Class="GameLib.App.Views.SignUpView"
              x:DataType="vm:UserAddViewModel"
+             xmlns:views="clr-namespace:GameLib.App.Views"
              Title="New Account"
              BackgroundColor="#121212">
 
@@ -28,4 +29,4 @@
                 BackgroundColor="#00A8E8" TextColor="White" 
                 CornerRadius="8" Margin="0,20,0,0" />
     </VerticalStackLayout>
-</ContentPage>
+</views:ContentPageBase>

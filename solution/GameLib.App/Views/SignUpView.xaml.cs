@@ -2,12 +2,11 @@ using GameLib.App.ViewModels;
 
 namespace GameLib.App.Views;
 
-public partial class SignUpView : ContentPage
+public partial class SignUpView : ContentPageBase
 {
-    public SignUpView()
+    public SignUpView(UserAddViewModel viewModel) : base(viewModel)
     {
         InitializeComponent();
-        BindingContext = IPlatformApplication.Current!.Services.GetService<UserAddViewModel>();
         Shell.Current.FlyoutBehavior = FlyoutBehavior.Disabled;
     }
 }
