@@ -1,10 +1,10 @@
+using GameLib.App.ViewModels;
+
 namespace GameLib.App.Views;
 
-public partial class GameDetailView : ContentPage
+public partial class GameDetailView : ContentPageBase
 {
-	public GameDetailView()
-	{
-        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
-        InitializeComponent();
-	}
+    public GameDetailView(GameDetailViewModel viewModel) : base(viewModel)
+    {
+    }
 }
