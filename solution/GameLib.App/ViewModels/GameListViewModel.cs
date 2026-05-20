@@ -24,8 +24,8 @@ public partial class GameListViewModel(
     }
 
     [RelayCommand]
-    protected void GoToAddGameAsync()
+    private async Task GoToAddGameAsync()
     {
-        navigationService.GoToAsync(NavigationService.GameAddPageRouteRelative);
+        await navigationService.GoToAsync(NavigationService.GameAddPageRouteAbsolute);
     }
 }
