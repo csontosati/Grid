@@ -11,12 +11,14 @@ public class NavigationService : INavigationService
     public const string LandingPageRouteAbsolute = "//UserSelectionView";
     public const string UserAddPageRouteAbsolute = "/SignUpView";
     public const string LibraryPageRouteAbsolute = "//LibraryView";
+    public const string GameAddPageRoute = nameof(GameAddView);
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
         new(LandingPageRouteAbsolute, typeof(UserSelectionView)),
         new(LandingPageRouteAbsolute + UserAddPageRouteAbsolute, typeof(SignUpView)),
         new(LibraryPageRouteAbsolute, typeof(LibraryView)),
+        new(GameAddPageRoute, typeof(GameAddView)),
     };
 
     public Task GoToAsync(string route)
@@ -24,5 +26,4 @@ public class NavigationService : INavigationService
 
     public Task GoToDataAsync(string route, IDictionary<string, object?> parameters)
         => Shell.Current.GoToAsync(route, parameters);
-
 }

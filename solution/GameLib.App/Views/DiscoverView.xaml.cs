@@ -23,6 +23,6 @@ public partial class DiscoverView : ContentPage
     }
     private async void OnAddGameClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(GameEditView));
+        await Shell.Current.GoToAsync(nameof(GameAddView));
     }
 }
