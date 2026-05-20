@@ -27,6 +27,7 @@ public static class AppInstaller
         services.AddSingleton<global::GameLib.App.ViewModels.GameListViewModel>();
         services.AddSingleton<global::GameLib.App.ViewModels.GameAddViewModel>();
         services.AddSingleton<global::GameLib.App.ViewModels.UserSettingsViewModel>();
+        services.AddSingleton<global::GameLib.App.ViewModels.GameDetailViewModel>();
 
 
         return services;

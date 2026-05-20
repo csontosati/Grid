@@ -19,7 +19,7 @@
                    VerticalOptions="Center" />
 
             <ImageButton Grid.Column="1" 
-                         Source="profile_placeholder.png" 
+                         Source="dotnet_bot.png" 
                          WidthRequest="40" 
                          HeightRequest="40" 
                          CornerRadius="20" 
