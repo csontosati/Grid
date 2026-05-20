@@ -18,7 +18,7 @@ public class GameFacade(
         GameDetailModel,
         GameEntityMapper>(
             unitOfWorkFactory,
-            modelMapper)
+            modelMapper), IGameFacade
 {
     public class Filter
     {

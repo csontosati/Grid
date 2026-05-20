@@ -1,8 +1,8 @@
-﻿using GameLib.BL.Mappers;
+﻿using GameLib.BL.Facades.Interfaces;
+using GameLib.BL.Mappers;
 using GameLib.BL.Models;
 using GameLib.DAL.Entities;
 using GameLib.DAL.Mappers;
-using GameLib.DAL.Repositories;
 using GameLib.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,7 @@ public class LibraryFacade(
         LibraryDetailModel,
         LibraryEntityMapper>(
         unitOfWorkFactory,
-        modelMapper)
+        modelMapper), ILibraryFacade
 {
     protected override ICollection<string> IncludesNavigationPathDetail =>
         new[]

@@ -1,13 +1,12 @@
-﻿using GameLib.BL.Mappers;
+﻿using CookBook.BL.Facades;
+using GameLib.BL.Mappers;
 using GameLib.BL.Models;
 using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Mappers;
 using GameLib.BL.Models;
 using GameLib.DAL.Entities;
-using GameLib.DAL.Enums;
 using GameLib.DAL.Mappers;
 using GameLib.DAL.UnitOfWork;
-using System.Linq;
 
 namespace GameLib.BL.Facades;
 
@@ -20,7 +19,7 @@ public class UserFacade(
         UserDetailModel,
         UserEntityMapper>(
             unitOfWorkFactory,
-            modelMapper)
+            modelMapper), IUserFacade
 {
   
 }
