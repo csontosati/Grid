@@ -19,7 +19,7 @@ public class LibraryFacade(
         unitOfWorkFactory,
         modelMapper)
 {
-    protected override ICollection<string> IncludesNavigationPathDetail =>
+    public override ICollection<string> IncludesNavigationPathDetail =>
         new[]
         {
             nameof(LibraryEntity.Games)
