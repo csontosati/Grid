@@ -25,16 +25,16 @@ public abstract class
     protected readonly IModelMapper<TEntity, TListModel, TDetailModel> ModelMapper = modelMapper;
     protected readonly IUnitOfWorkFactory UnitOfWorkFactory = unitOfWorkFactory;
 
-    protected virtual ICollection<string> IncludesNavigationPathDetail => new List<string>();
+    public virtual ICollection<string> IncludesNavigationPathDetail => new List<string>();
 
-    protected virtual IQueryable<TEntity> ApplyFilter(
+    public virtual IQueryable<TEntity> ApplyFilter(
         IQueryable<TEntity> query,
         object? filter)
     {
         return query;
     }
 
-    protected virtual IQueryable<TEntity> ApplyOrder(
+    public virtual IQueryable<TEntity> ApplyOrder(
         IQueryable<TEntity> query,
         object? filter)
     {

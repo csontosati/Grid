@@ -18,7 +18,7 @@ public class GameFacade(
         GameDetailModel,
         GameEntityMapper>(
             unitOfWorkFactory,
-            modelMapper)
+            modelMapper), IGameFacade
 {
     public class Filter
     {
@@ -28,7 +28,7 @@ public class GameFacade(
         public string? OrderBy { get; set; }
     }
 
-    protected override ICollection<string> IncludesNavigationPathDetail =>
+    public override ICollection<string> IncludesNavigationPathDetail =>
         new[]
         {
             nameof(GameEntity.Studio),
@@ -36,7 +36,7 @@ public class GameFacade(
             nameof(GameEntity.Timer)
         };
 
-    protected override IQueryable<GameEntity> ApplyFilter(
+    public override IQueryable<GameEntity> ApplyFilter(
         IQueryable<GameEntity> query,
         object? filter)
     {
@@ -60,7 +60,7 @@ public class GameFacade(
 
         return query;
     }
-    protected override IQueryable<GameEntity> ApplyOrder(
+    public override IQueryable<GameEntity> ApplyOrder(
         IQueryable<GameEntity> query,
         object? filter)
     {

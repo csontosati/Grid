@@ -8,7 +8,7 @@ using GameLib.DAL.Entities;
 
 namespace GameLib.App.ViewModels;
 public partial class GameListViewModel(
-    IGameFacade gameFacade,
+    IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
 : ViewModelBase(messengerService)
@@ -17,10 +17,9 @@ public partial class GameListViewModel(
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
 
     [RelayCommand]
-    protected async Task LoadGamesAsync()
+    protected override async Task LoadAsync()
     {
         await base.LoadAsync();
-        
         Games = await gameFacade.GetAsync();
     }
 }
