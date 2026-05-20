@@ -4,6 +4,7 @@ public partial class DiscoverView : ContentPage
 {
     public DiscoverView()
     {
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
         InitializeComponent();
     }
 

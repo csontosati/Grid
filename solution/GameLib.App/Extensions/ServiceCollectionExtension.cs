@@ -7,7 +7,7 @@ namespace GameLib.App.Extensions;
 
 public static partial class ServiceCollectionExtensions
 {
-    [GenerateServiceRegistrations(AssignableTo = typeof(UserSelectionView), AsSelf = true, Lifetime = ServiceLifetime.Transient)]
+    [GenerateServiceRegistrations(AssignableTo = typeof(ContentPageBase), AsSelf = true, Lifetime = ServiceLifetime.Transient)]
     public static partial IServiceCollection AddViews(this IServiceCollection services);
 
     [GenerateServiceRegistrations(AssignableTo = typeof(ViewModelBase), AsSelf = true, Lifetime = ServiceLifetime.Transient)]

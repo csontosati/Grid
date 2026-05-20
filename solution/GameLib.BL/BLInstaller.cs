@@ -5,7 +5,7 @@ using GameLib.DAL.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace CookBook.BL;
+namespace GameLib.BL;
 
 public static class BLInstaller
 {

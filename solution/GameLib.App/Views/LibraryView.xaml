@@ -6,7 +6,7 @@
              Title="Library"
              BackgroundColor="#121212">
 
-    <Grid RowDefinitions="Auto, *" Padding="20">
+    <Grid RowDefinitions="Auto, *" Padding="10">
 
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,20">
 
@@ -43,7 +43,7 @@
 
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="3" 
-                                 HorizontalItemSpacing="20" VerticalItemSpacing="20" />
+                                 HorizontalItemSpacing="10" VerticalItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>

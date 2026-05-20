@@ -20,6 +20,7 @@ public static class AppInstaller
         services.AddViews();
         services.AddViewModels();
 
+
         return services;
     }
 }

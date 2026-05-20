@@ -3,7 +3,7 @@ using GameLib.App.Services;
 using GameLib.DAL;
 using GameLib.DAL.Migrator;
 using GameLib.DAL.Seeds;
-using CookBook.BL;
+using GameLib.BL;
 using GameLib.App.Services.Interfaces;
 
 
