@@ -23,6 +23,17 @@ public partial class GameAddViewModel(
     public partial GameDetailModel Game { get; set; } = GameDetailModel.Empty;
     public Array PegiValues => Enum.GetValues(typeof(Pegi));
 
+    protected override Task LoadAsync()
+    {
+        Game = new GameDetailModel
+        {
+            StudioId = DefaultStudioId,
+            Name = string.Empty,
+            ImageUrl = string.Empty,
+            Age = Pegi.Three
+        };
+        return Task.CompletedTask;
+    }
     [RelayCommand]
     private async Task SaveAsync()
     {
@@ -45,6 +56,7 @@ public partial class GameAddViewModel(
             Game.Id = Guid.NewGuid();
 
             await gameFacade.SaveAsync(Game);
+            ForceDataRefreshOnNextAppearing();
             navigationService.SendBackButtonPressed();
         }
         catch (Exception ex)
@@ -55,6 +67,12 @@ public partial class GameAddViewModel(
             await Application.Current!.MainPage!.DisplayAlert("Chyba", $"Nepodarilo sa pridať hru: {inner}", "OK");
         }
         messengerService.Send(new GameAddedMessage());
+    }
+    [RelayCommand]
+    private async Task CancelAsync()
+    {
+        ForceDataRefreshOnNextAppearing();
+        navigationService.SendBackButtonPressed();
     }
 
 

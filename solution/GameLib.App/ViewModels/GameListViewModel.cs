@@ -14,7 +14,7 @@ public partial class GameListViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
-: ViewModelBase(messengerService), IRecipient<GameAddedMessage>, IRecipient<UserSelectedMessage>
+: ViewModelBase(messengerService), IRecipient<GameAddedMessage>, IRecipient<UserSelectedMessage>, IRecipient<GameDeletedMessage>, IRecipient<GameUpdatedMessage>
 {
     [ObservableProperty]
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
@@ -42,6 +42,14 @@ public partial class GameListViewModel(
         _currentUserId = message.UserId;
         System.Diagnostics.Debug.WriteLine($"UserSelectedMessage received: UserId = {_currentUserId}");
     }
+    public void Receive(GameDeletedMessage message)
+    {
+        ForceDataRefreshOnNextAppearing();
+    }
+    public void Receive(GameUpdatedMessage message)
+    {
+        ForceDataRefreshOnNextAppearing();
+    }
 
 
     [RelayCommand]
@@ -51,5 +59,11 @@ public partial class GameListViewModel(
 
         await navigationService.GoToAsync(NavigationService.UserSettingsPageAbsolute);
     }
-    
+    [RelayCommand]
+    private async Task GoToGameDetailAsync(GameListModel game)
+    {
+        messengerService.Send(new GameSelectedMessage(game.Id));
+        await navigationService.GoToAsync(NavigationService.GameDetailPageAbsolute);
+    }
+
 }

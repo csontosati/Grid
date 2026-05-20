@@ -3,20 +3,20 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                        xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
                        xmlns:vm="clr-namespace:GameLib.App.ViewModels"
-                       xmlns:models="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
+                       xmlns:models1="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
                        xmlns:views="clr-namespace:GameLib.App.Views"
                        x:Class="GameLib.App.Views.DiscoverView"
                        x:DataType="vm:GameListViewModel"
-                       Title="Discover"
-                       BackgroundColor="#121212">
+                       BackgroundColor="#121212"
+                       Title="Discover">
 
     <Grid RowDefinitions="Auto, *" Padding="10">
 
         <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto" Margin="0,0,0,20">
-            <Label Grid.Column="0" 
-                   Text="Discover" 
-                   FontSize="32" 
-                   FontAttributes="Bold" 
+            <Label Grid.Column="0"
+                   Text="Discover"
+                   FontSize="32"
+                   FontAttributes="Bold"
                    TextColor="White"
                    VerticalOptions="Center" />
 
@@ -31,34 +31,48 @@
                     VerticalOptions="Center"
                     Command="{Binding GoToAddGameCommand}" />
 
-            <ImageButton Grid.Column="2" 
-                         Source="profile_placeholder.png" 
-                         WidthRequest="40" 
-                         HeightRequest="40" 
-                         CornerRadius="20" 
+            <ImageButton Grid.Column="2"
+                         Source="dotnet_bot.png"
+                         WidthRequest="40"
+                         HeightRequest="40"
+                         CornerRadius="20"
                          VerticalOptions="Center"
-                         Command="{Binding GoToProfileCommand}" />
+                         Command="{Binding GoToUserSettingsCommand}" />
         </Grid>
 
         <CollectionView Grid.Row="1"
                         ItemsSource="{Binding Games}"
-                        SelectionMode="Single"
-                        SelectedItem="{Binding SelectedGame, Mode=TwoWay}">
+                        SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="3" 
+                <GridItemsLayout Orientation="Vertical" Span="3"
                                  HorizontalItemSpacing="10" VerticalItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:GameListModel">
-                    <Frame CornerRadius="12" Padding="0" IsClippedToBounds="True" BackgroundColor="#2D2D2D" BorderColor="Transparent" HeightRequest="260">
-                        <Grid RowDefinitions="180, Auto">
-                            <Image Grid.Row="0" Source="{Binding ImageUrl}" Aspect="AspectFill" />
-                            <Label Grid.Row="0" Text=" " />
-                            <!-- placeholder if no image -->
+                <DataTemplate x:DataType="models1:GameListModel">
+                    <Frame CornerRadius="12"
+                           Padding="0"
+                           IsClippedToBounds="True"
+                           BackgroundColor="#2D2D2D"
+                           BorderColor="Transparent"
+                           HeightRequest="260">
 
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GameListViewModel}}, Path=GoToGameDetailCommand}"
+                                CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+
+                        <Grid RowDefinitions="180, Auto">
+                            <Image Grid.Row="0"
+                                   Source="{Binding ImageUrl}"
+                                   Aspect="AspectFill" />
+                            <Label Grid.Row="0" Text=" " />
                             <VerticalStackLayout Grid.Row="1" Padding="15">
-                                <Label Text="{Binding Name}" TextColor="White" FontAttributes="Bold" FontSize="16" />
+                                <Label Text="{Binding Name}"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       FontSize="16" />
                             </VerticalStackLayout>
                         </Grid>
                     </Frame>

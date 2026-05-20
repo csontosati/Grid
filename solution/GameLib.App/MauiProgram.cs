@@ -61,6 +61,7 @@ public static class MauiProgram
         services.GetRequiredService<global::GameLib.App.ViewModels.GameListViewModel>();
         services.GetRequiredService<global::GameLib.App.ViewModels.GameAddViewModel>();
         services.GetRequiredService<global::GameLib.App.ViewModels.UserSettingsViewModel>();
+        services.GetRequiredService<global::GameLib.App.ViewModels.GameDetailViewModel>();
     }
 
 }

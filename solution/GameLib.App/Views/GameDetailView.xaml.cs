@@ -6,5 +6,6 @@ public partial class GameDetailView : ContentPageBase
 {
     public GameDetailView(GameDetailViewModel viewModel) : base(viewModel)
     {
+        InitializeComponent();
     }
 }
