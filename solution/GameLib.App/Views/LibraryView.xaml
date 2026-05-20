@@ -5,9 +5,7 @@
                        xmlns:views="clr-namespace:GameLib.App.Views"
                        xmlns:vm="clr-namespace:GameLib.App.ViewModels"
                        x:Class="GameLib.App.Views.LibraryView"
-                       x:DataType="vm:GameListViewModel"
-                       Title="Library"
-                       BackgroundColor="#121212">
+                       x:DataType="vm:AppShellViewModel">
 
     <Grid RowDefinitions="Auto, *" Padding="10">
 
@@ -26,7 +24,7 @@
                          HeightRequest="40" 
                          CornerRadius="20" 
                          VerticalOptions="Center"
-                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GameListViewModel}}, Path=GoToUserSettingsCommand}"
+                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AppShellViewModel}}, Path=GoToUserSettingsCommand}"
                          CommandParameter="{Binding .}" />
         </Grid>
 

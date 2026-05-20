@@ -19,7 +19,7 @@ public partial class GameListViewModel(
     [ObservableProperty]
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
 
-    public Guid UserId { get; set; }
+    private Guid _currentUserId = Guid.Empty;
 
     [RelayCommand]
     protected override async Task LoadAsync()
@@ -39,17 +39,17 @@ public partial class GameListViewModel(
     }
     public void Receive(UserSelectedMessage message)
     {
-        UserId = message.UserId;
+        _currentUserId = message.UserId;
     }
 
     [RelayCommand]
     private async Task GoToUserSettingsAsync()
     {
-        if (UserId == Guid.Empty) return;
+        if (_currentUserId == Guid.Empty) return;
 
         await navigationService.GoToDataAsync(
             NavigationService.UserSettingsPageAbsolute, 
-            new Dictionary<string, object?> { { "UserId", UserId } });
+            new Dictionary<string, object?> { { "UserId", _currentUserId } });
     }
     
 }

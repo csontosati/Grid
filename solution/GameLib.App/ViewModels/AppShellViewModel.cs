@@ -44,4 +44,26 @@ public partial class AppShellViewModel(
         _currentUserId = message.UserId;
         ForceDataRefreshOnNextAppearing();
     }
+    [RelayCommand]
+    private async Task GoToUserSettingsAsync()
+    {
+        //Debug.WriteLine($"AppShellViewModel.GoToUserSettingsAsync called. CurrentUserId = {_currentUserId}");
+
+        if (_currentUserId == Guid.Empty)
+        {
+            //Debug.WriteLine("No user selected, aborting navigation to UserSettings.");
+            await Application.Current.MainPage.DisplayAlert("Info", "No user selected.", "OK");
+            return;
+        }
+
+        // notify other viewmodels
+        messengerService.Send(new UserSelectedMessage(_currentUserId));
+
+        // navigate to UserSettings page with parameter
+        await _navigationService.GoToDataAsync(
+            NavigationService.UserSettingsPageAbsolute,
+            new Dictionary<string, object?> { { "UserId", _currentUserId } });
+    }
+
+
 }

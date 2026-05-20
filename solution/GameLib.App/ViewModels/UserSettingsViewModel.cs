@@ -1,4 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
@@ -15,7 +19,7 @@ public partial class UserSettingsViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     LibraryFacade libraryFacade,
     IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>
+    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>, IQueryAttributable
 {
     [ObservableProperty]
     public partial Guid UserId { get; set; }
@@ -42,47 +46,33 @@ public partial class UserSettingsViewModel(
         ForceDataRefreshOnNextAppearing();
     }
 
-    //[RelayCommand]
-    //private async Task SignOutAsync()
-    //{
-    //    await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
-    //}
+    // Called when QueryProperty sets UserId via Shell navigation
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query == null) return;
 
-    //[RelayCommand]
-    //private async Task SaveUserAsync()
-    //{
-    //    if (User is null) return;
-    //    await userFacade.SaveAsync(User);
-    //}
+        if (query.TryGetValue("UserId", out var idObj))
+        {
+            if (idObj is Guid guid)
+            {
+                UserId = guid;
+                ForceDataRefreshOnNextAppearing();
+            }
+            else if (Guid.TryParse(idObj?.ToString(), out var parsed))
+            {
+                UserId = parsed;
+                ForceDataRefreshOnNextAppearing();
+            }
+        }
+    }
 
-    //[RelayCommand]
-    //private async Task DeleteAccountAsync()
-    //{
-    //    if (UserId == Guid.Empty) return;
-    //    await userFacade.DeleteAsync(UserId);
-    //    await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
-    //}
+    // Partial callback invoked by CommunityToolkit when UserId changes
+    partial void OnUserIdChanged(Guid value)
+    {
+        if (value != Guid.Empty)
+        {
+            ForceDataRefreshOnNextAppearing();
+        }
+    }
 
-    //[RelayCommand]
-    //private async Task AddLibraryAsync()
-    //{
-    //    if (string.IsNullOrWhiteSpace(NewLibraryName) || User is null) return;
-    //    var library = new LibraryDetailModel
-    //    {
-    //        Id = Guid.Empty,
-    //        Name = NewLibraryName,
-    //        UserId = UserId
-    //    };
-    //    await libraryFacade.SaveAsync(library);
-    //    NewLibraryName = string.Empty;
-    //    ForceDataRefreshOnNextAppearing();
-    //    await LoadAsync();
-    //}
-
-    //[RelayCommand]
-    //private async Task DeleteLibraryAsync(LibraryListModel library)
-    //{
-    //    await libraryFacade.DeleteAsync(library.Id);
-    //    User?.Libraries.Remove(library);
-    //}
 }
