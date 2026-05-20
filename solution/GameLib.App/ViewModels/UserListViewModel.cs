@@ -14,7 +14,7 @@ public partial class UserListViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<UserAddedMessage>
+    : ViewModelBase(messengerService), IRecipient<UserDeletedMessage>, IRecipient<UserAddedMessage>, IRecipient<UserUpdatedMessage>
 {
     [ObservableProperty]
     public partial IEnumerable<UserListModel> Users { get; set; } = [];
@@ -24,6 +24,32 @@ public partial class UserListViewModel(
     {
         await base.LoadAsync();
         Users = await userFacade.GetAsync();
+    }
+
+    public void Receive(UserDeletedMessage message)
+    {
+        ForceDataRefreshOnNextAppearing();
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            Users = await userFacade.GetAsync();
+        });
+    }
+
+    public void Receive(UserAddedMessage message)
+    {
+        ForceDataRefreshOnNextAppearing();
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            Users = await userFacade.GetAsync();
+        });
+    }
+
+    public void Receive(UserUpdatedMessage message)
+    {
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            Users = await userFacade.GetAsync();
+        });
     }
 
     [RelayCommand]
@@ -37,10 +63,5 @@ public partial class UserListViewModel(
     {
         MessengerService.Send(new UserSelectedMessage(user.Id));
         await navigationService.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
-    }
-
-    public void Receive(UserAddedMessage message)
-    {
-        ForceDataRefreshOnNextAppearing();
     }
 }
