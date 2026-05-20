@@ -11,12 +11,14 @@ public class NavigationService : INavigationService
     public const string LandingPageRouteAbsolute = "//UserSelectionView";
     public const string UserAddPageRouteAbsolute = "/SignUpView";
     public const string LibraryPageRouteAbsolute = "//LibraryView";
+    public const string UserSettingsPageRoute = "//UserSettingsView";
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
         new(LandingPageRouteAbsolute, typeof(UserSelectionView)),
         new(LandingPageRouteAbsolute + UserAddPageRouteAbsolute, typeof(SignUpView)),
         new(LibraryPageRouteAbsolute, typeof(LibraryView)),
+        new(UserSettingsPageRoute, typeof(UserSettingsView)),
     };
 
     public Task GoToAsync(string route)

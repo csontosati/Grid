@@ -1,3 +1,4 @@
+using GameLib.App.Services;
 using GameLib.App.ViewModels;
 
 namespace GameLib.App.Views;
@@ -12,7 +13,7 @@ public partial class LibraryView : ContentPageBase
 
     private async void OnProfilePicClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(UserSettingsView));
+        await Shell.Current.GoToAsync(NavigationService.UserSettingsPageRoute);
     }
 
     private async void OnGameSelected(object sender, SelectionChangedEventArgs e)

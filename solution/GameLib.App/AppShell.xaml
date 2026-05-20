@@ -63,4 +63,9 @@
                       Route="LibraryView" />
     </FlyoutItem>
 
+    <FlyoutItem FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate views:UserSettingsView}"
+                      Route="UserSettingsView" />
+    </FlyoutItem>
+
 </Shell>

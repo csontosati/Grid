@@ -1,15 +1,12 @@
+using GameLib.App.ViewModels;
+
 namespace GameLib.App.Views;
 
-public partial class UserSettingsView : ContentPage
+public partial class UserSettingsView : ContentPageBase
 {
-    public UserSettingsView()
+    public UserSettingsView(UserSettingsViewModel viewModel) : base(viewModel)
     {
         Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
         InitializeComponent();
-    }
-    private async void OnSignOutClicked(object sender, EventArgs e)
-    {
-
-        await Shell.Current.GoToAsync("//UserSelectionView");
     }
 }
