@@ -22,4 +22,10 @@ public partial class GameListViewModel(
         await base.LoadAsync();
         Games = await gameFacade.GetAsync();
     }
+
+    [RelayCommand]
+    protected void GoToAddGameAsync()
+    {
+        navigationService.GoToAsync(NavigationService.GameAddPageRouteRelative);
+    }
 }

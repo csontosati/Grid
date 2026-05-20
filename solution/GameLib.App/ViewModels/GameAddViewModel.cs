@@ -19,14 +19,7 @@ public partial class GameAddViewModel(
     private static readonly Guid DefaultStudioId = StudioSeeds.DefaultStudio.Id;
 
     [ObservableProperty]
-    public partial GameDetailModel Game { get; set; } = new()
-    {
-        StudioId = DefaultStudioId,
-        Name = string.Empty,
-        ImageUrl = string.Empty,
-        Age = Pegi.Three 
-    };
-
+    public partial GameDetailModel Game { get; set; } = GameDetailModel.Empty;
     public Array PegiValues => Enum.GetValues(typeof(Pegi));
 
     [RelayCommand]

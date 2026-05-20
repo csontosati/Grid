@@ -29,7 +29,7 @@
                     HeightRequest="40"
                     Margin="0,0,20,0"
                     VerticalOptions="Center"
-                    Command="{Binding GoToAddGameCommand}" />
+                    Command="{Binding GoToAddGameAsyncCommand}" />
 
             <ImageButton Grid.Column="2" 
                          Source="profile_placeholder.png" 
