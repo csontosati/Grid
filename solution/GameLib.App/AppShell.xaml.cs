@@ -12,13 +12,6 @@ public partial class AppShell : Shell
         _viewModel = viewModel;
         BindingContext = viewModel;
 
-        Routing.RegisterRoute(nameof(Views.UserSettingsView), typeof(Views.UserSettingsView));
-        Routing.RegisterRoute(nameof(Views.SignUpView), typeof(Views.SignUpView));
-        Routing.RegisterRoute(nameof(Views.LibraryView), typeof(Views.LibraryView));
-        Routing.RegisterRoute(nameof(Views.GameDetailView), typeof(Views.GameDetailView));
-        Routing.RegisterRoute(nameof(Views.DiscoverView), typeof(Views.DiscoverView));
-        Routing.RegisterRoute(nameof(Views.GameEditView), typeof(Views.GameEditView));
-
         Navigated += OnNavigated;
     }
 
@@ -26,8 +19,6 @@ public partial class AppShell : Shell
     {
         if (e.Current.Location.OriginalString.Contains("LibraryView"))
         {
-            await Task.Delay(100);
-            _viewModel.ForceDataRefresh();
             await _viewModel.OnAppearingAsync();
         }
     }

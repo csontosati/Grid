@@ -17,8 +17,6 @@ public static class AppInstaller
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IAlertService, AlertService>();
 
-        services.AddSingleton<AppState>();
-
         services.AddViews();
         services.AddViewModels();
 

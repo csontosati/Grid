@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
 using GameLib.BL.Facades.Interfaces;
@@ -11,8 +12,7 @@ namespace GameLib.App.ViewModels;
 public partial class UserListViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     INavigationService navigationService,
-    IMessengerService messengerService,
-    AppState appState)
+    IMessengerService messengerService)
     : ViewModelBase(messengerService)
 {
     [ObservableProperty]
@@ -26,15 +26,15 @@ public partial class UserListViewModel(
     }
 
     [RelayCommand]
-    protected async Task GoToAddUserAsync()
+    private async Task GoToAddUserAsync()
     {
         await navigationService.GoToAsync(NavigationService.UserAddPageRouteAbsolute);
     }
 
     [RelayCommand]
-    protected async Task GoToLibraryAsync(UserListModel user)
+    private async Task GoToLibraryAsync(UserListModel user)
     {
-        appState.CurrentUserId = user.Id;
+        MessengerService.Send(new UserSelectedMessage(user.Id));
         await navigationService.GoToAsync(NavigationService.LibraryPageRouteAbsolute);
     }
 }
