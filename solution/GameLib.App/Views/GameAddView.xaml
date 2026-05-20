@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:GameLib.App.Views"
+    xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+    xmlns:enums="clr-namespace:GameLib.DAL.Enums;assembly=GameLib.DAL"
+    x:Class="GameLib.App.Views.GameAddView"
+    x:DataType="vm:GameAddViewModel"
+    Title="Přidat hru">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="20">
+
+            <!-- Header -->
+            <Label
+                Text="Nová hra"
+                FontSize="28"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Margin="0,8,0,4"/>
+
+            <!-- Cover Image Preview -->
+            <Border
+                HeightRequest="180"
+                WidthRequest="180"
+                HorizontalOptions="Center"
+                StrokeThickness="1"
+                Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444444}"
+                StrokeShape="RoundRectangle 12">
+                <Image
+                    x:Name="CoverPreview"
+                    Source="{Binding Game.ImageUrl}"
+                    Aspect="AspectFill"/>
+            </Border>
+
+            <!-- Game Name -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Název hry *" FontSize="14" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 8" StrokeThickness="1" Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}" Padding="4,0">
+                    <Entry
+                        Text="{Binding Game.Name}"
+                        Placeholder="Zadejte název hry"
+                        ReturnType="Next"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Description -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Popis" FontSize="14" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 8" StrokeThickness="1" Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}" Padding="4,0">
+                    <Editor
+                        Text="{Binding Game.Description}"
+                        Placeholder="Krátký popis hry..."
+                        AutoSize="TextChanges"
+                        MinimumHeightRequest="80"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Image URL -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="URL obrázku *" FontSize="14" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 8" StrokeThickness="1" Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}" Padding="4,0">
+                    <Entry
+                        Text="{Binding Game.ImageUrl}"
+                        Placeholder="https://..."
+                        Keyboard="Url"
+                        ReturnType="Next"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- PEGI Rating -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="PEGI hodnocení *" FontSize="14" FontAttributes="Bold"/>
+                <Border StrokeShape="RoundRectangle 8" StrokeThickness="1" Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#555555}" Padding="4,0">
+                    <Picker
+                        Title="Vyberte PEGI věkové hodnocení"
+                        ItemsSource="{Binding PegiValues}"
+                        SelectedItem="{Binding Game.Age}"/>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Buttons -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,8,0,0">
+                <Button
+                    Grid.Column="0"
+                    Text="Zrušit"
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333333}"
+                    TextColor="{AppThemeBinding Light=#333333, Dark=#CCCCCC}"
+                    CornerRadius="10"
+                    HeightRequest="48"/>
+                <Button
+                    Grid.Column="1"
+                    Text="Uložit"
+                    Command="{Binding SaveCommand}"
+                    CornerRadius="10"
+                    HeightRequest="48"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</views:ContentPageBase>
