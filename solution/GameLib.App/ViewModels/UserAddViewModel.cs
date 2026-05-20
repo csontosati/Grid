@@ -21,7 +21,7 @@ public partial class UserAddViewModel(
     {
         if (string.IsNullOrWhiteSpace(User.UserName))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Chyba", "Username je povinný.", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Error", "Username is a required field.", "OK");
             return;
         }
 
@@ -29,11 +29,11 @@ public partial class UserAddViewModel(
         {
             User.Id = Guid.NewGuid();
             await userFacade.SaveAsync(User);
-            await navigationService.GoToAsync("..");
+            navigationService.SendBackButtonPressed();
         }
         catch (Exception ex)
         {
-            await Application.Current!.MainPage!.DisplayAlert("Chyba", $"Nepodarilo sa vytvoriť účet: {ex.Message}", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Error", $"Account Creation Unsuccessful: {ex.Message}", "OK");
         }
     }
 }

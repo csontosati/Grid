@@ -9,13 +9,13 @@ namespace GameLib.App.Services;
 public class NavigationService : INavigationService
 {
     public const string LandingPageRouteAbsolute = "//UserSelectionView";
-    public const string UserAddPageRouteAbsolute = "/SignUpView";
+    public const string UserAddPageRouteRelative = "/SignUpView";
     public const string LibraryPageRouteAbsolute = "//LibraryView";
 
     public IEnumerable<RouteModel> Routes { get; } = new List<RouteModel>
     {
         new(LandingPageRouteAbsolute, typeof(UserSelectionView)),
-        new(LandingPageRouteAbsolute + UserAddPageRouteAbsolute, typeof(SignUpView)),
+        new(LandingPageRouteAbsolute + UserAddPageRouteRelative, typeof(SignUpView)),
         new(LibraryPageRouteAbsolute, typeof(LibraryView)),
     };
 
@@ -25,4 +25,5 @@ public class NavigationService : INavigationService
     public Task GoToDataAsync(string route, IDictionary<string, object?> parameters)
         => Shell.Current.GoToAsync(route, parameters);
 
+    public bool SendBackButtonPressed() => Shell.Current.SendBackButtonPressed();
 }

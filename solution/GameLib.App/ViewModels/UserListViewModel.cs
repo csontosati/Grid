@@ -28,7 +28,7 @@ public partial class UserListViewModel(
     [RelayCommand]
     private async Task GoToAddUserAsync()
     {
-        await navigationService.GoToAsync(NavigationService.UserAddPageRouteAbsolute);
+        await navigationService.GoToAsync(NavigationService.UserAddPageRouteRelative);
     }
 
     [RelayCommand]

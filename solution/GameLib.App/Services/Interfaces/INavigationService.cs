@@ -9,5 +9,7 @@ public interface INavigationService
     Task GoToAsync(string route);
 
     Task GoToDataAsync(string route, IDictionary<string, object?> parameters);
+
+    bool SendBackButtonPressed();
 }
 
