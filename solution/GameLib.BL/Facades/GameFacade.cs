@@ -36,7 +36,7 @@ public class GameFacade(
             nameof(GameEntity.Timer)
         };
 
-    protected override IQueryable<GameEntity> ApplyFilter(
+    public override IQueryable<GameEntity> ApplyFilter(
         IQueryable<GameEntity> query,
         object? filter)
     {
@@ -60,7 +60,7 @@ public class GameFacade(
 
         return query;
     }
-    protected override IQueryable<GameEntity> ApplyOrder(
+    public override IQueryable<GameEntity> ApplyOrder(
         IQueryable<GameEntity> query,
         object? filter)
     {

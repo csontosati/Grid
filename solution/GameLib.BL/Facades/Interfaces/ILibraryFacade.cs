@@ -6,11 +6,9 @@ using GameLib.DAL.UnitOfWork;
 
 namespace GameLib.BL.Facades.Interfaces;
 
-public interface ILibraryFacade
+public interface ILibraryFacade : IFacade<LibraryEntity, LibraryListModel, LibraryDetailModel>
 {
-    public Task AddGameAsync(Guid libraryId, Guid gameId);
-
-
-    public Task RemoveGameAsync(Guid libraryId, Guid gameId);
-    public Task<IList<LibraryListModel>> GetByUserAsync(Guid userId);
+    Task AddGameAsync(Guid libraryId, Guid gameId);
+    Task RemoveGameAsync(Guid libraryId, Guid gameId);
+    Task<IList<LibraryListModel>> GetByUserAsync(Guid userId);
 }

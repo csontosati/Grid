@@ -27,14 +27,14 @@ public abstract class
 
     protected virtual ICollection<string> IncludesNavigationPathDetail => new List<string>();
 
-    protected virtual IQueryable<TEntity> ApplyFilter(
+    public virtual IQueryable<TEntity> ApplyFilter(
         IQueryable<TEntity> query,
         object? filter)
     {
         return query;
     }
 
-    protected virtual IQueryable<TEntity> ApplyOrder(
+    public virtual IQueryable<TEntity> ApplyOrder(
         IQueryable<TEntity> query,
         object? filter)
     {
