@@ -21,6 +21,8 @@ public static class AppInstaller
 
         services.AddViews();
         services.AddViewModels();
+
+
         services.AddSingleton<global::GameLib.App.ViewModels.UserListViewModel>();
         services.AddSingleton<global::GameLib.App.ViewModels.UserAddViewModel>();
         services.AddSingleton<global::GameLib.App.ViewModels.AppShellViewModel>();
@@ -28,6 +30,7 @@ public static class AppInstaller
         services.AddSingleton<global::GameLib.App.ViewModels.GameAddViewModel>();
         services.AddSingleton<global::GameLib.App.ViewModels.UserSettingsViewModel>();
         services.AddSingleton<global::GameLib.App.ViewModels.GameDetailViewModel>();
+        services.AddSingleton<global::GameLib.App.ViewModels.LibraryListViewModel>();
 
 
         return services;

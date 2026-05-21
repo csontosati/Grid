@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
+using GameLib.App.ViewModels;
 using GameLib.BL.Facades;
 using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Models;
@@ -11,21 +12,18 @@ using GameLib.DAL.Entities;
 using GameLib.DAL.Enums;
 
 namespace GameLib.App.ViewModels;
-
 public partial class LibraryListViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService),
-      IRecipient<GameAddedMessage>,
-      IRecipient<LibrarySelectedMessage>,
-      IRecipient<GameDeletedMessage>,
-      IRecipient<GameUpdatedMessage>
+      IRecipient<LibrarySelectedMessage>
 {
     [ObservableProperty]
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
 
-    private GameFacade.Filter? _currentFilter;
+    private GameFacade.Filter _currentFilter = new();
+
     private Guid _currentLibraryId = Guid.Empty;
 
     [ObservableProperty]
@@ -42,7 +40,7 @@ public partial class LibraryListViewModel(
     public IEnumerable<string> OrderByOptions { get; } =
     [
         "name",
-        "age",
+        "age"
     ];
 
     [RelayCommand]
@@ -53,20 +51,31 @@ public partial class LibraryListViewModel(
         if (_currentLibraryId == Guid.Empty)
             return;
 
+        await ReloadAsync();
+    }
+
+    private async Task ReloadAsync()
+    {
+        if (_currentLibraryId == Guid.Empty)
+        {
+            Games = [];
+            return;
+        }
+
+        _currentFilter.LibraryId = _currentLibraryId;
+
         Games = await gameFacade.GetAsync(_currentFilter);
     }
 
     [RelayCommand]
     private async Task ApplyFilterAsync()
     {
-        _currentFilter = new GameFacade.Filter
-        {
-            Name = FilterName,
-            Age = (Pegi?)FilterAge,
-            OrderBy = SelectedOrderBy
-        };
+        _currentFilter.Name = FilterName;
+        _currentFilter.Age = FilterAge;
+        _currentFilter.OrderBy = SelectedOrderBy;
+        _currentFilter.LibraryId = _currentLibraryId;
 
-        Games = await gameFacade.GetAsync(_currentFilter);
+        await ReloadAsync();
     }
 
     [RelayCommand]
@@ -76,38 +85,24 @@ public partial class LibraryListViewModel(
         FilterAge = null;
         SelectedOrderBy = null;
 
-        _currentFilter = null;
+        _currentFilter = new GameFacade.Filter
+        {
+            LibraryId = _currentLibraryId
+        };
 
-        Games = await gameFacade.GetAsync();
+        await ReloadAsync();
     }
-
-    [RelayCommand]
-    private async Task GoToAddGameAsync()
-    {
-        await navigationService.GoToAsync(
-            NavigationService.GameAddPageRouteAbsolute);
-    }
-
-    public void Receive(GameAddedMessage message)
-        => ForceDataRefreshOnNextAppearing();
 
     public void Receive(LibrarySelectedMessage message)
     {
         _currentLibraryId = message.LibraryId;
-        ForceDataRefreshOnNextAppearing();
-    }
 
-    public void Receive(GameDeletedMessage message)
-        => ForceDataRefreshOnNextAppearing();
+        _currentFilter = new GameFacade.Filter
+        {
+            LibraryId = _currentLibraryId
+        };
 
-    public void Receive(GameUpdatedMessage message)
-        => ForceDataRefreshOnNextAppearing();
-
-    [RelayCommand]
-    private async Task GoToUserSettingsAsync()
-    {
-        await navigationService.GoToAsync(
-            NavigationService.UserSettingsPageAbsolute);
+        _ = ReloadAsync();
     }
 
     [RelayCommand]
@@ -117,5 +112,12 @@ public partial class LibraryListViewModel(
 
         await navigationService.GoToAsync(
             NavigationService.GameDetailPageAbsolute);
+    }
+
+    [RelayCommand]
+    private async Task GoToAddGameAsync()
+    {
+        await navigationService.GoToAsync(
+            NavigationService.GameAddPageRouteAbsolute);
     }
 }

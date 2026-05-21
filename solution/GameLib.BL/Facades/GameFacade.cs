@@ -25,6 +25,7 @@ public class GameFacade(
         public string? Name { get; set; }
         public Pegi? Age { get; set; }
         public Guid? StudioId { get; set; }
+        public Guid? LibraryId { get; set; }
         public string? OrderBy { get; set; }
     }
 
@@ -33,7 +34,8 @@ public class GameFacade(
         {
             nameof(GameEntity.Studio),
             nameof(GameEntity.Categories),
-            nameof(GameEntity.Timer)
+            nameof(GameEntity.Timer),
+            nameof(GameEntity.Libraries)
         };
 
     public override IQueryable<GameEntity> ApplyFilter(
@@ -56,6 +58,12 @@ public class GameFacade(
         if (f.StudioId is not null)
         {
             query = query.Where(g => g.StudioId == f.StudioId);
+        }
+
+        if (f.LibraryId is not null)
+        {
+            query = query.Where(g =>
+                g.Libraries.Any(l => l.Id == f.LibraryId));
         }
 
         return query;
