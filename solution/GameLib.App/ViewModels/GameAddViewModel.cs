@@ -41,13 +41,13 @@ public partial class GameAddViewModel(
         Game.StudioName = "2k";
         if (string.IsNullOrWhiteSpace(Game.Name))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Chyba", "Název hry je povinný.", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Error", "Game name is required.", "OK");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Game.ImageUrl))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Chyba", "URL obrázku je povinné.", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Error", "Image URL is required", "OK");
             return;
         }
 
@@ -64,7 +64,7 @@ public partial class GameAddViewModel(
             var inner = ex.InnerException?.InnerException?.Message
                         ?? ex.InnerException?.Message
                         ?? ex.Message;
-            await Application.Current!.MainPage!.DisplayAlert("Chyba", $"Nepodarilo sa pridať hru: {inner}", "OK");
+            await Application.Current!.MainPage!.DisplayAlert("Error", $"Game creatin failed: {inner}", "OK");
         }
         messengerService.Send(new GameAddedMessage());
     }

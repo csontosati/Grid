@@ -23,7 +23,6 @@
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
-    <!-- Login View - Hidden from Flyout -->
     <ShellItem FlyoutItemIsVisible="False">
         <ShellContent
             Title="Login"
@@ -31,13 +30,11 @@
             Route="UserSelectionView" />
     </ShellItem>
 
-    <!-- Discover Menu Item with Command Support -->
     <ShellItem Title="Discover" x:Name="DiscoverItem">
         <ShellContent ContentTemplate="{DataTemplate views:DiscoverView}" 
                       Route="DiscoverView" />
     </ShellItem>
 
-    <!-- Libraries Section in Flyout Footer -->
     <Shell.FlyoutFooter>
         <VerticalStackLayout Padding="20,10" BackgroundColor="#1A1A1A" Spacing="5">
             <BoxView HeightRequest="1" Color="#333333" HorizontalOptions="Fill" />
