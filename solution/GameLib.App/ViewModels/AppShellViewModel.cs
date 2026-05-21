@@ -14,7 +14,7 @@ public partial class AppShellViewModel(
     LibraryFacade libraryFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
-    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>
+    : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>, IRecipient<UserUpdatedMessage>
 {
     private readonly INavigationService _navigationService = navigationService;
     private Guid _currentUserId = Guid.Empty;
@@ -26,7 +26,8 @@ public partial class AppShellViewModel(
     {
         if (library == null) return;
 
-        await _navigationService.GoToDataAsync("//LibraryView", new Dictionary<string, object?> { { "Id", library.Id } });
+        messengerService.Send(new LibrarySelectedMessage(library.Id));
+        await _navigationService.GoToAsync("//LibraryView");
     }
 
     protected override async Task LoadAsync()
@@ -43,6 +44,10 @@ public partial class AppShellViewModel(
     {
         _currentUserId = message.UserId;
         ForceDataRefreshOnNextAppearing();
+    }
+    public void Receive(UserUpdatedMessage message)
+    {
+        _ = LoadAsync();
     }
     [RelayCommand]
     private async Task GoToUserSettingsAsync()

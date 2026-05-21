@@ -104,9 +104,10 @@ public partial class GameDetailViewModel(
     }
 
 
-    public void Receive(GameSelectedMessage message)
+    public async void Receive(GameSelectedMessage message)
     {
         _gameId = message.GameId;
+        await LoadAsync();
         System.Diagnostics.Debug.WriteLine($"GameSelectedId received: GameId= {_gameId}");
     }
 

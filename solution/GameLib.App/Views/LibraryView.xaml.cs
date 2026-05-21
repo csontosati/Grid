@@ -4,10 +4,10 @@ namespace GameLib.App.Views;
 
 public partial class LibraryView : ContentPageBase
 {
-	public LibraryView(GameListViewModel viewModel) : base(viewModel)
-    {
-        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
-        InitializeComponent();
+	public LibraryView(LibraryListViewModel viewModel) : base(viewModel)
+	{
+		Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
+		InitializeComponent();
 	}
     private async void OnProfilePicClicked(object sender, EventArgs e)
     {

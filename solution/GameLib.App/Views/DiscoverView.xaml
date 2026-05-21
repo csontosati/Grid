@@ -14,7 +14,6 @@
           Padding="20"
           RowSpacing="20">
 
-        <!-- HEADER -->
         <Grid Grid.Row="0"
               ColumnDefinitions="*,Auto,Auto"
               ColumnSpacing="15"
@@ -49,6 +48,7 @@
                          Command="{Binding GoToUserSettingsCommand}" />
         </Grid>
 
+
         <HorizontalStackLayout Grid.Row="1"
                                Spacing="10"
                                VerticalOptions="Center">
@@ -67,6 +67,11 @@
                     SelectedItem="{Binding FilterAge, Mode=TwoWay}"
                     Title="Age" />
 
+            <Picker WidthRequest="160"
+                    HeightRequest="45"
+                    ItemsSource="{Binding OrderByOptions}"
+                    SelectedItem="{Binding SelectedOrderBy, Mode=TwoWay}"
+                    Title="Sort" />
 
             <Button Text="Apply"
                     HeightRequest="45"
@@ -83,7 +88,6 @@
                     Command="{Binding ClearFilterCommand}" />
         </HorizontalStackLayout>
 
-        <!-- GAMES -->
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Games}"
                         SelectionMode="None">

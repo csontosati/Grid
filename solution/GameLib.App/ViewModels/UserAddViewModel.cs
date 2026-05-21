@@ -17,6 +17,12 @@ public partial class UserAddViewModel(
     [ObservableProperty]
     public partial UserDetailModel User { get; set; } = UserDetailModel.Empty;
 
+    protected override Task LoadAsync()
+    {
+        User = UserDetailModel.Empty;
+        return Task.CompletedTask;
+    }
+
     [RelayCommand]
     private async Task SaveAsync()
     {
@@ -31,6 +37,7 @@ public partial class UserAddViewModel(
             
             User.Id = Guid.NewGuid();
             await userFacade.SaveAsync(User);
+            ForceDataRefreshOnNextAppearing();
             navigationService.SendBackButtonPressed();
             messengerService.Send(new UserAddedMessage());
         }

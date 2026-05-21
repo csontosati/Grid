@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
@@ -12,13 +12,13 @@ using GameLib.DAL.Enums;
 
 namespace GameLib.App.ViewModels;
 
-public partial class GameListViewModel(
+public partial class LibraryListViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService),
       IRecipient<GameAddedMessage>,
-      IRecipient<UserSelectedMessage>,
+      IRecipient<LibrarySelectedMessage>,
       IRecipient<GameDeletedMessage>,
       IRecipient<GameUpdatedMessage>
 {
@@ -26,6 +26,7 @@ public partial class GameListViewModel(
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
 
     private GameFacade.Filter? _currentFilter;
+    private Guid _currentLibraryId = Guid.Empty;
 
     [ObservableProperty]
     public partial string? FilterName { get; set; }
@@ -44,12 +45,13 @@ public partial class GameListViewModel(
         "age",
     ];
 
-    private Guid _currentUserId = Guid.Empty;
-
     [RelayCommand]
     protected override async Task LoadAsync()
     {
         await base.LoadAsync();
+
+        if (_currentLibraryId == Guid.Empty)
+            return;
 
         Games = await gameFacade.GetAsync(_currentFilter);
     }
@@ -89,8 +91,11 @@ public partial class GameListViewModel(
     public void Receive(GameAddedMessage message)
         => ForceDataRefreshOnNextAppearing();
 
-    public void Receive(UserSelectedMessage message)
-        => _currentUserId = message.UserId;
+    public void Receive(LibrarySelectedMessage message)
+    {
+        _currentLibraryId = message.LibraryId;
+        ForceDataRefreshOnNextAppearing();
+    }
 
     public void Receive(GameDeletedMessage message)
         => ForceDataRefreshOnNextAppearing();
@@ -101,9 +106,6 @@ public partial class GameListViewModel(
     [RelayCommand]
     private async Task GoToUserSettingsAsync()
     {
-        if (_currentUserId == Guid.Empty)
-            return;
-
         await navigationService.GoToAsync(
             NavigationService.UserSettingsPageAbsolute);
     }

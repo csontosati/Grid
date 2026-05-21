@@ -10,6 +10,7 @@
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="20">
 
+        <!-- SIGN OUT -->
         <Button Grid.Row="0"
                 Text="Sign Out"
                 BackgroundColor="#2D2D2D"
@@ -22,29 +23,47 @@
         <ScrollView Grid.Row="1">
             <VerticalStackLayout Spacing="20" Padding="0,20">
 
+                <!-- TITLE -->
                 <Label Text="Profile Settings"
-                       FontSize="32" FontAttributes="Bold"
+                       FontSize="32"
+                       FontAttributes="Bold"
                        TextColor="White"
                        HorizontalOptions="Center" />
 
+                <!-- USER FIELDS -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <Entry Grid.Column="0" Placeholder="Email"
+                    <Entry Grid.Column="0"
+                           Placeholder="Email"
                            Text="{Binding User.Email}"
-                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
-                    <Entry Grid.Column="1" Placeholder="Username"
+                           BackgroundColor="#2D2D2D"
+                           TextColor="White"
+                           PlaceholderColor="#A0A0A0" />
+
+                    <Entry Grid.Column="1"
+                           Placeholder="Username"
                            Text="{Binding User.UserName}"
-                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                           BackgroundColor="#2D2D2D"
+                           TextColor="White"
+                           PlaceholderColor="#A0A0A0" />
                 </Grid>
 
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                    <Entry Grid.Column="0" Placeholder="First Name"
+                    <Entry Grid.Column="0"
+                           Placeholder="First Name"
                            Text="{Binding User.FirstName}"
-                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
-                    <Entry Grid.Column="1" Placeholder="Last Name"
+                           BackgroundColor="#2D2D2D"
+                           TextColor="White"
+                           PlaceholderColor="#A0A0A0" />
+
+                    <Entry Grid.Column="1"
+                           Placeholder="Last Name"
                            Text="{Binding User.LastName}"
-                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                           BackgroundColor="#2D2D2D"
+                           TextColor="White"
+                           PlaceholderColor="#A0A0A0" />
                 </Grid>
 
+                <!-- SAVE -->
                 <Button Text="Save"
                         BackgroundColor="#deff9a"
                         TextColor="#121212"
@@ -53,21 +72,29 @@
                         Padding="20,10"
                         Command="{Binding SaveUserCommand}" />
 
-                <BoxView HeightRequest="1" Color="#333333" HorizontalOptions="Fill" />
+                <BoxView HeightRequest="1"
+                         Color="#333333"
+                         HorizontalOptions="Fill" />
 
+                <!-- LIBRARIES TITLE -->
                 <Label Text="Libraries"
-                       FontSize="24" FontAttributes="Bold"
+                       FontSize="24"
+                       FontAttributes="Bold"
                        TextColor="White" />
 
-                <CollectionView ItemsSource="{Binding User.Libraries}">
+                <!-- LIST OF LIBRARIES -->
+                <CollectionView ItemsSource="{Binding Libraries}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:LibraryListModel">
+
                             <Grid ColumnDefinitions="*,Auto" Padding="0,5">
-                                <Label Grid.Column="0"
-                                       Text="{Binding Name}"
+
+                                <Entry Grid.Column="0"
+                                       Text="{Binding Name, Mode=TwoWay}"
+                                       BackgroundColor="#2D2D2D"
                                        TextColor="White"
-                                       FontSize="16"
-                                       VerticalOptions="Center" />
+                                       PlaceholderColor="#A0A0A0" />
+
                                 <Button Grid.Column="1"
                                         Text="X"
                                         BackgroundColor="#BD1E1E"
@@ -75,17 +102,24 @@
                                         CornerRadius="8"
                                         WidthRequest="45"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserSettingsViewModel}}, Path=DeleteLibraryCommand}"
-                                        CommandParameter="{Binding .}" />
+                                        CommandParameter="{Binding Id}" />
+
                             </Grid>
+
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <!-- ADD NEW LIBRARY -->
                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
                     <Entry Grid.Column="0"
                            Placeholder="New library name"
                            Text="{Binding NewLibraryName}"
-                           BackgroundColor="#2D2D2D" TextColor="White" PlaceholderColor="#A0A0A0" />
+                           BackgroundColor="#2D2D2D"
+                           TextColor="White"
+                           PlaceholderColor="#A0A0A0" />
+
                     <Button Grid.Column="1"
                             Text="+"
                             BackgroundColor="#deff9a"
@@ -93,11 +127,13 @@
                             CornerRadius="8"
                             WidthRequest="45"
                             Command="{Binding AddLibraryCommand}" />
+
                 </Grid>
 
             </VerticalStackLayout>
         </ScrollView>
 
+        <!-- DELETE ACCOUNT -->
         <Button Grid.Row="2"
                 Text="Delete Account"
                 BackgroundColor="#BD1E1E"
