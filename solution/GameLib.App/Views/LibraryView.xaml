@@ -94,36 +94,48 @@
                 <DataTemplate x:DataType="models:GameListModel">
 
                     <Frame CornerRadius="12"
-                           Padding="0"
-                           IsClippedToBounds="True"
-                           BackgroundColor="#2D2D2D"
-                           BorderColor="Transparent"
-                           HeightRequest="260"
-                           HasShadow="False">
+               Padding="0"
+               IsClippedToBounds="True"
+               BackgroundColor="#2D2D2D"
+               BorderColor="Transparent"
+               HeightRequest="260"
+               HasShadow="False">
 
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LibraryListViewModel}}, Path=GoToGameDetailCommand}"
-                                CommandParameter="{Binding .}" />
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LibraryListViewModel}}, Path=GoToGameDetailCommand}"
+                    CommandParameter="{Binding .}" />
                         </Frame.GestureRecognizers>
 
-                        <Grid RowDefinitions="180,*">
+                        <Grid RowDefinitions="180,Auto">
 
-                            <Image Grid.Row="0"
-                                   Source="{Binding ImageUrl}"
-                                   Aspect="AspectFill" />
+                          <Image Grid.Row="0"
+                       Source="{Binding ImageUrl}"
+                       Aspect="AspectFill" />
 
-                            <VerticalStackLayout Grid.Row="1"
-                                                 Padding="15"
-                                                 VerticalOptions="Center">
+                            <Grid Grid.Row="1"
+                      Padding="15"
+                      ColumnDefinitions="*,Auto">
 
-                                <Label Text="{Binding Name}"
-                                       TextColor="White"
-                                       FontAttributes="Bold"
-                                       FontSize="16"
-                                       LineBreakMode="TailTruncation" />
+                                <Label Grid.Column="0"
+                           Text="{Binding Name}"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           LineBreakMode="TailTruncation"
+                           VerticalOptions="Center" />
 
-                            </VerticalStackLayout>
+                                <Button Grid.Column="1"
+                            Text="Delete"
+                            BackgroundColor="#BD1E1E"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="10,0"
+                            HeightRequest="35"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LibraryListViewModel}}, Path=DeleteGameCommand}"
+                            CommandParameter="{Binding .}" />
+
+                            </Grid>
                         </Grid>
                     </Frame>
 

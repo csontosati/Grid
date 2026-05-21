@@ -41,8 +41,6 @@
                         HeightRequest="160"
                         Placeholder="Write a short description..." />
 
-                <!-- Additional simple fields -->
-
             </VerticalStackLayout>
         </ScrollView>
 
@@ -59,8 +57,33 @@
                                 ItemsSource="{Binding PegiValues}"
                                 SelectedItem="{Binding Game.Age, Mode=TwoWay}"
                                 Title="Select age" />
-
                     </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Library picker + Add button -->
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="12" CornerRadius="12">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Add to library" FontAttributes="Bold" TextColor="White" />
+
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Picker Title="Select library"
+                                ItemsSource="{Binding Libraries}"
+                                SelectedItem="{Binding SelectedLibrary, Mode=TwoWay}"
+                                ItemDisplayBinding="{Binding Name}"
+                                WidthRequest="180"
+                                HeightRequest="40" />
+
+                        <Button Text="Add"
+                                HeightRequest="40"
+                                WidthRequest="90"
+                                BackgroundColor="#deff9a"
+                                TextColor="#121212"
+                                CornerRadius="8"
+                                Command="{Binding AddToLibraryCommand}" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding AddToLibraryStatus}" TextColor="#A0A0A0" FontSize="12" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -79,15 +102,6 @@
                             BackgroundColor="Red"
                             TextColor="White"
                             Command="{Binding DeleteGameCommand}" />
-
-                    <Button Text="Add to library"
-                            HeightRequest="50"
-                            CornerRadius="10"
-                            BackgroundColor="Transparent"
-                            BorderColor="#deff9a"
-                            BorderWidth="1"
-                            TextColor="#deff9a"
-                            Command="{Binding AddToLibraryCommand}" />
                 </VerticalStackLayout>
             </Frame>
 

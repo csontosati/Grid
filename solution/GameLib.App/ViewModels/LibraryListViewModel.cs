@@ -14,15 +14,18 @@ using GameLib.DAL.Enums;
 namespace GameLib.App.ViewModels;
 public partial class LibraryListViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
+    LibraryFacade libFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
     : ViewModelBase(messengerService),
-      IRecipient<LibrarySelectedMessage>
+      IRecipient<LibrarySelectedMessage>,IRecipient<UserSelectedMessage>
 {
     [ObservableProperty]
     public partial IEnumerable<GameListModel> Games { get; set; } = [];
 
     private GameFacade.Filter _currentFilter = new();
+
+    private Guid _currentUserId = Guid.Empty;
 
     private Guid _currentLibraryId = Guid.Empty;
 
@@ -92,6 +95,13 @@ public partial class LibraryListViewModel(
 
         await ReloadAsync();
     }
+    [RelayCommand]
+    private async Task DeleteGameAsync(GameListModel game)
+    {
+
+        await libFacade.RemoveGameAsync(_currentLibraryId,game.Id);
+        await ReloadAsync();
+    }
 
     public void Receive(LibrarySelectedMessage message)
     {
@@ -103,6 +113,11 @@ public partial class LibraryListViewModel(
         };
 
         _ = ReloadAsync();
+    }
+    public void Receive(UserSelectedMessage message)
+    {
+        _currentUserId = message.UserId;
+
     }
 
     [RelayCommand]
@@ -119,5 +134,14 @@ public partial class LibraryListViewModel(
     {
         await navigationService.GoToAsync(
             NavigationService.GameAddPageRouteAbsolute);
+    }
+    [RelayCommand]
+    private async Task GoToUserSettingsAsync()
+    {
+        if (_currentUserId == Guid.Empty)
+            return;
+
+        await navigationService.GoToAsync(
+            NavigationService.UserSettingsPageAbsolute);
     }
 }

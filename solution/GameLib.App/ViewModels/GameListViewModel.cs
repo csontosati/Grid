@@ -36,6 +36,7 @@ public partial class GameListViewModel(
     [ObservableProperty]
     public partial string? SelectedOrderBy { get; set; }
 
+
     public Array PegiValues => Enum.GetValues(typeof(Pegi));
 
     public IEnumerable<string> OrderByOptions { get; } =
@@ -90,7 +91,11 @@ public partial class GameListViewModel(
         => ForceDataRefreshOnNextAppearing();
 
     public void Receive(UserSelectedMessage message)
-        => _currentUserId = message.UserId;
+    {
+        _currentUserId = message.UserId;
+
+    }
+
 
     public void Receive(GameDeletedMessage message)
         => ForceDataRefreshOnNextAppearing();

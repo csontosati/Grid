@@ -40,7 +40,6 @@ public partial class AppShellViewModel(
     {
         _currentUserId = message.UserId;
 
-        // 🔥 toto je dôležité
         _ = LoadAsync();
     }
 
