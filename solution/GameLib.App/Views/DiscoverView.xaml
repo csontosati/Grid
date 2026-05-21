@@ -10,9 +10,16 @@
                        BackgroundColor="#121212"
                        Title="Discover">
 
-    <Grid RowDefinitions="Auto, *" Padding="10">
+    <Grid RowDefinitions="Auto,Auto,*"
+          Padding="20"
+          RowSpacing="20">
 
-        <Grid Grid.Row="0" ColumnDefinitions="*, Auto, Auto" Margin="0,0,0,20">
+        <!-- HEADER -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*,Auto,Auto"
+              ColumnSpacing="15"
+              VerticalOptions="Center">
+
             <Label Grid.Column="0"
                    Text="Discover"
                    FontSize="32"
@@ -27,35 +34,77 @@
                     FontAttributes="Bold"
                     CornerRadius="20"
                     HeightRequest="40"
-                    Margin="0,0,20,0"
+                    Padding="20,0"
                     VerticalOptions="Center"
                     Command="{Binding GoToAddGameCommand}" />
 
             <ImageButton Grid.Column="2"
                          Source="dotnet_bot.png"
-                         WidthRequest="40"
-                         HeightRequest="40"
-                         CornerRadius="20"
+                         WidthRequest="42"
+                         HeightRequest="42"
+                         CornerRadius="21"
+                         BackgroundColor="Transparent"
                          VerticalOptions="Center"
+                         HorizontalOptions="End"
                          Command="{Binding GoToUserSettingsCommand}" />
         </Grid>
 
-        <CollectionView Grid.Row="1"
+        <HorizontalStackLayout Grid.Row="1"
+                               Spacing="10"
+                               VerticalOptions="Center">
+
+            <Entry WidthRequest="240"
+                   HeightRequest="45"
+                   Placeholder="Search by name"
+                   Text="{Binding FilterName, Mode=TwoWay}"
+                   BackgroundColor="#2D2D2D"
+                   TextColor="White"
+                   PlaceholderColor="#A0A0A0" />
+
+            <Picker WidthRequest="140"
+                    HeightRequest="45"
+                    ItemsSource="{Binding PegiValues}"
+                    SelectedItem="{Binding FilterAge, Mode=TwoWay}"
+                    Title="Age" />
+
+
+            <Button Text="Apply"
+                    HeightRequest="45"
+                    Padding="20,0"
+                    BackgroundColor="#deff9a"
+                    TextColor="#121212"
+                    Command="{Binding ApplyFilterCommand}" />
+
+            <Button Text="Clear"
+                    HeightRequest="45"
+                    Padding="20,0"
+                    BackgroundColor="#2D2D2D"
+                    TextColor="White"
+                    Command="{Binding ClearFilterCommand}" />
+        </HorizontalStackLayout>
+
+        <!-- GAMES -->
+        <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Games}"
                         SelectionMode="None">
+
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="3"
-                                 HorizontalItemSpacing="10" VerticalItemSpacing="10" />
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="3"
+                                 HorizontalItemSpacing="15"
+                                 VerticalItemSpacing="15" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models1:GameListModel">
+
                     <Frame CornerRadius="12"
                            Padding="0"
                            IsClippedToBounds="True"
                            BackgroundColor="#2D2D2D"
                            BorderColor="Transparent"
-                           HeightRequest="260">
+                           HeightRequest="260"
+                           HasShadow="False">
 
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer
@@ -63,21 +112,28 @@
                                 CommandParameter="{Binding .}" />
                         </Frame.GestureRecognizers>
 
-                        <Grid RowDefinitions="180, Auto">
+                        <Grid RowDefinitions="180,*">
+
                             <Image Grid.Row="0"
                                    Source="{Binding ImageUrl}"
                                    Aspect="AspectFill" />
-                            <Label Grid.Row="0" Text=" " />
-                            <VerticalStackLayout Grid.Row="1" Padding="15">
+
+                            <VerticalStackLayout Grid.Row="1"
+                                                 Padding="15"
+                                                 VerticalOptions="Center">
+
                                 <Label Text="{Binding Name}"
                                        TextColor="White"
                                        FontAttributes="Bold"
-                                       FontSize="16" />
+                                       FontSize="16"
+                                       LineBreakMode="TailTruncation" />
+
                             </VerticalStackLayout>
                         </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
     </Grid>
 </views:ContentPageBase>
