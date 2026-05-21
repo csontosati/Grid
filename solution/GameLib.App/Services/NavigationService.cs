@@ -10,7 +10,7 @@ public class NavigationService : INavigationService
 {
     public const string LandingPageRouteAbsolute = "//UserSelectionView";
     public const string UserAddPageRouteRelative = "/SignUpView";
-    public const string LibraryPageRouteAbsolute = "//LibraryView";
+    public const string LibraryPageRouteAbsolute = "//DiscoverView";
     public const string GameAddPageRouteAbsolute = "//GameAddView";
     public const string UserSettingsPageAbsolute = "//UserSettings";
 

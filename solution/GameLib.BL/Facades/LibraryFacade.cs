@@ -86,5 +86,4 @@ public class LibraryFacade(
 
         return ModelMapper.MapToListModel(entities).ToList();
     }
-
 }

@@ -5,6 +5,7 @@ using GameLib.DAL.Entities;
 using GameLib.DAL.Enums;
 using GameLib.DAL.Mappers;
 using GameLib.DAL.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace GameLib.BL.Facades;
@@ -77,5 +78,15 @@ public class GameFacade(
 
             _ => query
         };
+    }
+    public async Task<IEnumerable<GameListModel>> GetByLibraryAsync(Guid libraryId)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+        var repo = uow.GetRepository<GameEntity, GameEntityMapper>();
+        var entities = await repo
+            .Get()
+            .Where(g => g.Libraries.Any(l => l.Id == libraryId))
+            .ToListAsync();
+        return ModelMapper.MapToListModel(entities);
     }
 }

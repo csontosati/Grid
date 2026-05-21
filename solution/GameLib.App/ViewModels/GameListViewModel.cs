@@ -4,28 +4,32 @@ using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
 using GameLib.App.Services;
 using GameLib.App.Services.Interfaces;
-using GameLib.App.Views;
+using GameLib.BL.Facades;
 using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Models;
-using GameLib.DAL.Entities;
 
 namespace GameLib.App.ViewModels;
+
 public partial class GameListViewModel(
-    IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
+    IGameFacade gameFacade,
+    LibraryFacade libraryFacade,
     INavigationService navigationService,
     IMessengerService messengerService)
-: ViewModelBase(messengerService), IRecipient<GameAddedMessage>, IRecipient<UserSelectedMessage>
+    : ViewModelBase(messengerService), IRecipient<GameAddedMessage>, IRecipient<UserSelectedMessage>
 {
-    [ObservableProperty]
-    public partial IEnumerable<GameListModel> Games { get; set; } = [];
+    [ObservableProperty] public partial IEnumerable<GameListModel> Games { get; set; } = [];
 
     private Guid _currentUserId = Guid.Empty;
+    private Guid _currentLibraryId = Guid.Empty;
 
-    [RelayCommand]
     protected override async Task LoadAsync()
     {
         await base.LoadAsync();
-        Games = await gameFacade.GetAsync();
+
+        if (_currentLibraryId == Guid.Empty)
+            Games = await gameFacade.GetAsync();
+        else
+            Games = await gameFacade.GetByLibraryAsync(_currentLibraryId);
     }
 
     [RelayCommand]
@@ -33,18 +37,26 @@ public partial class GameListViewModel(
     {
         await navigationService.GoToAsync(NavigationService.GameAddPageRouteAbsolute);
     }
+
     public void Receive(GameAddedMessage message)
     {
         ForceDataRefreshOnNextAppearing();
     }
+
     public void Receive(UserSelectedMessage message)
     {
         _currentUserId = message.UserId;
-        System.Diagnostics.Debug.WriteLine($"UserSelectedMessage received: UserId = {_currentUserId}");
+        ForceDataRefreshOnNextAppearing();
     }
 
+    public void Recieve(LibrarySelectedMessage message)
+    {
+        if (_currentLibraryId == message.LibraryId) return;
+        _currentLibraryId = message.LibraryId;
+        ForceDataRefreshOnNextAppearing();
+    }
 
-    [RelayCommand]
+[RelayCommand]
     private async Task GoToUserSettingsAsync()
     {
         if (_currentUserId == Guid.Empty) return;
