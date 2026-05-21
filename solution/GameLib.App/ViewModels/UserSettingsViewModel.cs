@@ -90,6 +90,7 @@ public partial class UserSettingsViewModel(
     [RelayCommand]
     private async Task SignOutAsync()
     {
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Disabled;
         await Shell.Current.GoToAsync(NavigationService.LandingPageRouteAbsolute);
     }
 
