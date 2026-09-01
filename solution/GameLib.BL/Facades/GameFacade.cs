@@ -78,8 +78,10 @@ public class GameFacade(
         return f.OrderBy switch
         {
             "name" => query.OrderBy(g => g.Name),
+            "name_desc" => query.OrderByDescending(g => g.Name),
 
             "age" => query.OrderBy(g => g.Age),
+            "age_desc" => query.OrderByDescending(g => g.Age),
             _ => query
         };
     }
