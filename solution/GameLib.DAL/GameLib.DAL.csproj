@@ -5,6 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  
+  <!-- No patched SQLitePCLRaw.lib.e_sqlite3 exists yet on the 2.1.x line (transitive via
+       Microsoft.EntityFrameworkCore.Sqlite); tracked upstream at
+       https://github.com/dotnet/efcore/issues/38547 - revisit and remove once fixed. -->
+  <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-2m69-gcr7-jv3q" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
@@ -17,6 +24,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+        <!-- Pinned above Microsoft.EntityFrameworkCore.Design's transitive reference to
+         resolve NU1903 (multiple high-severity advisories against 9.0.0) -->
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.11" />
   </ItemGroup>
 
   <ItemGroup>
