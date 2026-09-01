@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+                       xmlns:views="clr-namespace:GameLib.App.Views"
+                       xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+                       xmlns:models="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
+                       x:Class="GameLib.App.Views.LibraryView"
+                       x:DataType="vm:LibraryListViewModel"
+                       BackgroundColor="#121212"
+                       Title="Library">
+
+    <Grid RowDefinitions="Auto,Auto,*"
+          Padding="20"
+          RowSpacing="20">
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*,Auto"
+              ColumnSpacing="15"
+              VerticalOptions="Center">
+
+            <Label Grid.Column="0"
+                   Text="Library"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center" />
+
+            <ImageButton Grid.Column="1"
+                         Source="dotnet_bot.png"
+                         WidthRequest="42"
+                         HeightRequest="42"
+                         CornerRadius="21"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         HorizontalOptions="End"
+                         Command="{Binding GoToUserSettingsCommand}" />
+        </Grid>
+
+        <!-- FILTER BAR (same as Discover) -->
+        <HorizontalStackLayout Grid.Row="1"
+                               Spacing="10"
+                               VerticalOptions="Center">
+
+            <Entry WidthRequest="240"
+                   HeightRequest="45"
+                   Placeholder="Search by name"
+                   Text="{Binding FilterName, Mode=TwoWay}"
+                   BackgroundColor="#2D2D2D"
+                   TextColor="White"
+                   PlaceholderColor="#A0A0A0" />
+
+            <Picker WidthRequest="140"
+                    HeightRequest="45"
+                    ItemsSource="{Binding PegiValues}"
+                    SelectedItem="{Binding FilterAge, Mode=TwoWay}"
+                    Title="Age" />
+
+            <Picker WidthRequest="160"
+                    HeightRequest="45"
+                    ItemsSource="{Binding OrderByOptions}"
+                    SelectedItem="{Binding SelectedOrderBy, Mode=TwoWay}"
+                    Title="Sort" />
+
+            <Button Text="Apply"
+                    HeightRequest="45"
+                    Padding="20,0"
+                    BackgroundColor="#deff9a"
+                    TextColor="#121212"
+                    Command="{Binding ApplyFilterCommand}" />
+
+            <Button Text="Clear"
+                    HeightRequest="45"
+                    Padding="20,0"
+                    BackgroundColor="#2D2D2D"
+                    TextColor="White"
+                    Command="{Binding ClearFilterCommand}" />
+        </HorizontalStackLayout>
+
+        <!-- GAMES GRID -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Games}"
+                        SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="3"
+                                 HorizontalItemSpacing="15"
+                                 VerticalItemSpacing="15" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:GameListModel">
+
+                    <Frame CornerRadius="12"
+               Padding="0"
+               IsClippedToBounds="True"
+               BackgroundColor="#2D2D2D"
+               BorderColor="Transparent"
+               HeightRequest="260"
+               HasShadow="False">
+
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LibraryListViewModel}}, Path=GoToGameDetailCommand}"
+                    CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+
+                        <Grid RowDefinitions="180,Auto">
+
+                          <Image Grid.Row="0"
+                       Source="{Binding ImageUrl}"
+                       Aspect="AspectFill" />
+
+                            <Grid Grid.Row="1"
+                      Padding="15"
+                      ColumnDefinitions="*,Auto">
+
+                                <Label Grid.Column="0"
+                           Text="{Binding Name}"
+                           TextColor="White"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           LineBreakMode="TailTruncation"
+                           VerticalOptions="Center" />
+
+                                <Button Grid.Column="1"
+                            Text="Delete"
+                            BackgroundColor="#BD1E1E"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="10,0"
+                            HeightRequest="35"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LibraryListViewModel}}, Path=DeleteGameCommand}"
+                            CommandParameter="{Binding .}" />
+
+                            </Grid>
+                        </Grid>
+                    </Frame>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+</views:ContentPageBase>

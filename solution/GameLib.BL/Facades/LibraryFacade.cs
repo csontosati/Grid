@@ -19,7 +19,7 @@ public class LibraryFacade(
         unitOfWorkFactory,
         modelMapper)
 {
-    protected override ICollection<string> IncludesNavigationPathDetail =>
+    public override ICollection<string> IncludesNavigationPathDetail =>
         new[]
         {
             nameof(LibraryEntity.Games)
@@ -72,4 +72,19 @@ public class LibraryFacade(
 
         await uow.CommitAsync();
     }
+    public async Task<IList<LibraryListModel>> GetByUserAsync(Guid userId)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+
+        var repo = uow.GetRepository<LibraryEntity, LibraryEntityMapper>();
+
+        var query = repo
+            .Get()
+            .Where(l => l.UserId == userId);
+
+        var entities = await query.ToListAsync();
+
+        return ModelMapper.MapToListModel(entities).ToList();
+    }
+
 }

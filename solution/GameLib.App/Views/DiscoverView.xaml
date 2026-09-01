@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+                       xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+                       xmlns:models1="clr-namespace:GameLib.BL.Models;assembly=GameLib.BL"
+                       xmlns:views="clr-namespace:GameLib.App.Views"
+                       x:Class="GameLib.App.Views.DiscoverView"
+                       x:DataType="vm:GameListViewModel"
+                       BackgroundColor="#121212"
+                       Title="Discover">
+
+    <Grid RowDefinitions="Auto,Auto,*"
+          Padding="20"
+          RowSpacing="20">
+
+        <Grid Grid.Row="0"
+              ColumnDefinitions="*,Auto,Auto"
+              ColumnSpacing="15"
+              VerticalOptions="Center">
+
+            <Label Grid.Column="0"
+                   Text="Discover"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center" />
+
+            <Button Grid.Column="1"
+                    Text="+ Add Game"
+                    BackgroundColor="#deff9a"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="20"
+                    HeightRequest="40"
+                    Padding="20,0"
+                    VerticalOptions="Center"
+                    Command="{Binding GoToAddGameCommand}" />
+
+            <ImageButton Grid.Column="2"
+                         Source="dotnet_bot.png"
+                         WidthRequest="42"
+                         HeightRequest="42"
+                         CornerRadius="21"
+                         BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                         HorizontalOptions="End"
+                         Command="{Binding GoToUserSettingsCommand}" />
+        </Grid>
+
+
+        <HorizontalStackLayout Grid.Row="1"
+                               Spacing="10"
+                               VerticalOptions="Center">
+
+            <Entry WidthRequest="240"
+                   HeightRequest="45"
+                   Placeholder="Search by name"
+                   Text="{Binding FilterName, Mode=TwoWay}"
+                   BackgroundColor="#2D2D2D"
+                   TextColor="White"
+                   PlaceholderColor="#A0A0A0" />
+
+            <Picker WidthRequest="140"
+                    HeightRequest="45"
+                    ItemsSource="{Binding PegiValues}"
+                    SelectedItem="{Binding FilterAge, Mode=TwoWay}"
+                    Title="Age" />
+
+            <Picker WidthRequest="160"
+                    HeightRequest="45"
+                    ItemsSource="{Binding OrderByOptions}"
+                    SelectedItem="{Binding SelectedOrderBy, Mode=TwoWay}"
+                    Title="Sort" />
+
+            <Button Text="Apply"
+                    HeightRequest="45"
+                    Padding="20,0"
+                    BackgroundColor="#deff9a"
+                    TextColor="#121212"
+                    Command="{Binding ApplyFilterCommand}" />
+
+            <Button Text="Clear"
+                    HeightRequest="45"
+                    Padding="20,0"
+                    BackgroundColor="#2D2D2D"
+                    TextColor="White"
+                    Command="{Binding ClearFilterCommand}" />
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Games}"
+                        SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="3"
+                                 HorizontalItemSpacing="15"
+                                 VerticalItemSpacing="15" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models1:GameListModel">
+
+                    <Frame CornerRadius="12"
+                           Padding="0"
+                           IsClippedToBounds="True"
+                           BackgroundColor="#2D2D2D"
+                           BorderColor="Transparent"
+                           HeightRequest="260"
+                           HasShadow="False">
+
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GameListViewModel}}, Path=GoToGameDetailCommand}"
+                                CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+
+                        <Grid RowDefinitions="180,*">
+
+                            <Image Grid.Row="0"
+                                   Source="{Binding ImageUrl}"
+                                   Aspect="AspectFill" />
+
+                            <VerticalStackLayout Grid.Row="1"
+                                                 Padding="15"
+                                                 VerticalOptions="Center">
+
+                                <Label Text="{Binding Name}"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       LineBreakMode="TailTruncation" />
+
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</views:ContentPageBase>

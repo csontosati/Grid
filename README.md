@@ -1,25 +1,82 @@
-# ICS Project: Game Launcher
+# Grid — Game Launcher
 
-## Progress: Fáze 2 – repositáře a mapování
+A game launcher application (inspired by platforms like Steam and Epic Games) that lets users
+browse game titles and manage them within their own personal libraries.
 
-## Introduction
-This is a semester project for the ICS course. It is a game launcher application (inspired by platforms like Steam and Epic Games) that allows users to browse various game titles and manage them within their own personal libraries. 
+Originally built as a semester project for the ICS course, with a focus on clean architecture,
+object-oriented design, and database integration.
 
-The application is built with a strong focus on clean architecture, object-oriented design, and database integration.
+## Status
 
-## Architecture & Technologies
-The solution follows a multi-project, layered architecture to strictly separate concerns:
-* **App (Frontend):** .NET MAUI (Multi-platform App UI) for a cross-platform user interface.
-* **BL (Business Logic):** Contains Facades and mapping logic to translate database entities into Data Transfer Objects (DTOs).
-* **DAL (Data Access Layer):** Uses Entity Framework Core with a Code First approach to manage data persistence via a local SQLite database. All filtering, searching, and sorting are executed directly at the database level.
-* **Tests:** xUnit framework for automated Unit and Integration testing.
+MVP complete — full app (frontend + backend), submitted and graded.
 
-## Getting Started
+## Architecture
 
-### Prerequisites
-* .NET 10.0 SDK (or the version specified by your environment)
-* Visual Studio / JetBrains Rider
-* EF Core CLI tools (`dotnet tool install --global dotnet-ef`)
+Layered, single solution:
 
-### Database Setup
-The application uses a local SQLite database
+```
+GameLib.App   → .NET MAUI frontend (MVVM), cross-platform UI
+GameLib.BL    → Business logic: Facades + DTOs (Models) mapped from entities
+GameLib.DAL   → Data access: EF Core (Code First) + SQLite, Repository/UnitOfWork pattern
+```
+
+Each layer registers its own services via an `*Installer.cs` (`AppInstaller`, `BLInstaller`,
+`DALInstaller`), wired together in `MauiProgram.cs`. All filtering, searching, and sorting
+happens at the database level, not in memory.
+
+Tests use xUnit, covering both `GameLib.DAL` and `GameLib.BL`.
+
+## Domain model
+
+- **User** — owns one or more **Library** entries
+- **Library** — a user's collection, linked to many **Game**s
+- **Game** — belongs to a **Studio**, tagged with **Category**, tracked via **Timer**
+  (play-session tracking)
+
+## Platform support
+
+`GameLib.App` targets:
+
+| Platform | Notes |
+|---|---|
+| Android | Builds on any OS, including Linux (no Windows/Mac required) |
+| iOS / Mac Catalyst | Only builds on non-Linux hosts |
+| Windows | Only builds on Windows hosts |
+
+The backend (`GameLib.DAL`, `GameLib.BL`) is plain .NET — no platform restrictions, builds and
+tests anywhere .NET 10 runs (including Linux, which is what CI uses).
+
+## Prerequisites
+
+- .NET 10.0 SDK
+- Visual Studio / JetBrains Rider (with MAUI workload, if building the app UI)
+- EF Core CLI tools: `dotnet tool install --global dotnet-ef`
+
+## Database setup
+
+The application uses a local SQLite database, managed via EF Core Code First migrations.
+
+```bash
+cd solution/GameLib.DAL
+dotnet ef database update
+```
+
+## Running tests
+
+```bash
+dotnet test solution/GameLib.Tests/GameLib.DAL.Tests.csproj
+dotnet test solution/GameLib.BL.Tests/GameLib.BL.Tests.csproj
+```
+
+## CI
+
+GitHub Actions (`.github/workflows/ci.yml`) builds and tests `GameLib.DAL` and `GameLib.BL` on
+every push/PR to `main`. `GameLib.App` is excluded from CI since it requires MAUI workloads.
+
+## Usage
+
+_TODO: add usage instructions here._
+
+## License
+
+Apache License 2.0 — see [LICENSE](LICENSE).

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:ContentPageBase
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://schemas.microsoft.com/dotnet/2021/maui/design"
+    xmlns:views="clr-namespace:GameLib.App.Views"
+    xmlns:vm="clr-namespace:GameLib.App.ViewModels"
+    x:Class="GameLib.App.Views.GameDetailView"
+    x:DataType="vm:GameDetailViewModel"
+    Title="{Binding Game.Name}"
+    BackgroundColor="#121212">
+
+    <Grid ColumnDefinitions="2*, *" Padding="40" ColumnSpacing="40">
+
+        <!-- Left column: editable fields (show current DB values via Editable* bindings) -->
+        <ScrollView Grid.Column="0">
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Name -->
+                <Entry Text="{Binding Game.Name, Mode=TwoWay}"
+                       FontSize="36"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       BackgroundColor="#00000000"
+                       Placeholder="Game name" />
+
+                <!-- Banner with image preview and change button -->
+                <Frame CornerRadius="15" Padding="0" IsClippedToBounds="True" HasShadow="False" BorderColor="Transparent">
+                    <Grid HeightRequest="300">
+                        <Image Source="{Binding Game.ImageUrl, FallbackValue='game_banner_placeholder.png'}"
+                               Aspect="AspectFill" Opacity="0.9" />
+                        <BoxView BackgroundColor="Black" Opacity="0.15" />
+                    </Grid>
+                </Frame>
+
+                <!-- Description -->
+                <Label Text="About the game" FontSize="18" FontAttributes="Bold" TextColor="White" />
+                <Editor Text="{Binding Game.Description, Mode=TwoWay}"
+                        TextColor="#A0A0A0"
+                        BackgroundColor="#1E1E1E"
+                        HeightRequest="160"
+                        Placeholder="Write a short description..." />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Right column: info, categories and actions -->
+        <VerticalStackLayout Grid.Column="1" Spacing="20">
+
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="16" CornerRadius="12">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Game Info" FontAttributes="Bold" FontSize="18" TextColor="White" />
+
+                    <Grid ColumnDefinitions="Auto, *" RowSpacing="8">
+                        <Label Grid.Row="0" Grid.Column="0" Text="Age rating:" TextColor="Gray" VerticalOptions="Center" />
+                        <Picker Grid.Row="0" Grid.Column="1"
+                                ItemsSource="{Binding PegiValues}"
+                                SelectedItem="{Binding Game.Age, Mode=TwoWay}"
+                                Title="Select age" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Library picker + Add button -->
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="12" CornerRadius="12">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Add to library" FontAttributes="Bold" TextColor="White" />
+
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <Picker Title="Select library"
+                                ItemsSource="{Binding Libraries}"
+                                SelectedItem="{Binding SelectedLibrary, Mode=TwoWay}"
+                                ItemDisplayBinding="{Binding Name}"
+                                WidthRequest="180"
+                                HeightRequest="40" />
+
+                        <Button Text="Add"
+                                HeightRequest="40"
+                                WidthRequest="90"
+                                BackgroundColor="#deff9a"
+                                TextColor="#121212"
+                                CornerRadius="8"
+                                Command="{Binding AddToLibraryCommand}" />
+                    </HorizontalStackLayout>
+
+                    <Label Text="{Binding AddToLibraryStatus}" TextColor="#A0A0A0" FontSize="12" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="#1E1E1E" BorderColor="#333" Padding="12" CornerRadius="12">
+                <VerticalStackLayout Spacing="12">
+                    <Button Text="Save"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            BackgroundColor="#deff9a"
+                            TextColor="#121212"
+                            Command="{Binding SaveCommand}" />
+
+                    <Button Text="Delete Game"
+                            HeightRequest="50"
+                            CornerRadius="10"
+                            BackgroundColor="Red"
+                            TextColor="White"
+                            Command="{Binding DeleteGameCommand}" />
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+
+    </Grid>
+</views:ContentPageBase>

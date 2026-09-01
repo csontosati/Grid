@@ -18,25 +18,27 @@ public class GameFacade(
         GameDetailModel,
         GameEntityMapper>(
             unitOfWorkFactory,
-            modelMapper)
+            modelMapper), IGameFacade
 {
     public class Filter
     {
         public string? Name { get; set; }
         public Pegi? Age { get; set; }
         public Guid? StudioId { get; set; }
+        public Guid? LibraryId { get; set; }
         public string? OrderBy { get; set; }
     }
 
-    protected override ICollection<string> IncludesNavigationPathDetail =>
+    public override ICollection<string> IncludesNavigationPathDetail =>
         new[]
         {
             nameof(GameEntity.Studio),
             nameof(GameEntity.Categories),
-            nameof(GameEntity.Timer)
+            nameof(GameEntity.Timer),
+            nameof(GameEntity.Libraries)
         };
 
-    protected override IQueryable<GameEntity> ApplyFilter(
+    public override IQueryable<GameEntity> ApplyFilter(
         IQueryable<GameEntity> query,
         object? filter)
     {
@@ -58,9 +60,15 @@ public class GameFacade(
             query = query.Where(g => g.StudioId == f.StudioId);
         }
 
+        if (f.LibraryId is not null)
+        {
+            query = query.Where(g =>
+                g.Libraries.Any(l => l.Id == f.LibraryId));
+        }
+
         return query;
     }
-    protected override IQueryable<GameEntity> ApplyOrder(
+    public override IQueryable<GameEntity> ApplyOrder(
         IQueryable<GameEntity> query,
         object? filter)
     {
@@ -70,11 +78,8 @@ public class GameFacade(
         return f.OrderBy switch
         {
             "name" => query.OrderBy(g => g.Name),
-            "name_desc" => query.OrderByDescending(g => g.Name),
 
             "age" => query.OrderBy(g => g.Age),
-            "age_desc" => query.OrderByDescending(g => g.Age),
-
             _ => query
         };
     }
