@@ -363,3 +363,7 @@ FodyWeavers.xsd
 /solution/.idea/.idea.solution/.idea
 
 /local
+
+*.db
+*.db-shm
+*.db-wal
