@@ -77,6 +77,17 @@ every push/PR to `main`. `GameLib.App` is excluded from CI since it requires MAU
 
 _TODO: add usage instructions here._
 
+## 🤖 AI Agent Workflows (Skills)
+
+This repository includes custom agent skills that allow AI coding assistants (like Claude Code) to seamlessly build, run, and understand the project.
+
+If you are pairing with an AI assistant in this repository, you can trigger these workflows directly in the chat using slash commands (e.g., `/grid-runner`):
+
+- **`/grid-runner`**: Automatically handles building the app, running EF Core database migrations, running xUnit tests, and managing the local Windows workflow. *(Use this to quickly start up and run the app!)*
+- **`/grid-architecture`**: Teaches the agent the exact 3-tier layer contracts, domain models, relationships, and Git workflow.
+
+*(These skills are automatically discovered by the agent from the `.claude/skills/` directory).*
+
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).

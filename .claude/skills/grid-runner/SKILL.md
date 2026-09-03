@@ -66,21 +66,33 @@ dotnet ef migrations add <MigrationName> --project solution\GameLib.DAL\GameLib.
 
 ---
 
-## 4. Building and Running `GameLib.App`
+## 4. Building and Running `GameLib.App` (Path A vs Path B)
 
-### Step 1: Build
-From `solution\GameLib.App`:
+> [!CAUTION]
+> **AI Agent Background Execution Quirk**:
+> Automated agent tools run in headless background shells. Windows security prevents background subprocesses from rendering GUI windows on the user's interactive monitor (`MainWindowHandle` remains `0`). Therefore, **agents must build the app, and the user must launch the executable**.
+
+### Path A: User Manual Execution
+Run directly in an interactive Windows PowerShell:
 ```powershell
+cd solution\GameLib.App
 dotnet build -f net10.0-windows10.0.19041.0
-```
-
-### Step 2: Run Executable
-```powershell
 cd bin\Debug\net10.0-windows10.0.19041.0\win-x64
 .\GameLib.App.exe
 ```
 
-A native desktop window will open, pre-populated with starter seed data from `GameLib.DAL/Seeds/`.
+### Path B: AI Agent Assisted (Recommended when pairing with an LLM)
+1. **Agent compiles the app**:
+   ```powershell
+   dotnet build solution\GameLib.App\GameLib.App.csproj -f net10.0-windows10.0.19041.0
+   ```
+2. **User launches the executable**:
+   The agent reports compilation status and asks the user to run:
+   ```powershell
+   cd C:\Users\csont\Documents\GitHub\Grid\solution\GameLib.App\bin\Debug\net10.0-windows10.0.19041.0\win-x64; .\GameLib.App.exe
+   ```
+   *(Or double-click `GameLib.App.exe` in File Explorer).*
+
 
 ---
 
