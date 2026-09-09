@@ -24,7 +24,6 @@ jobs:
   # so the job fails immediately if any test fails.
   # ──────────────────────────────────────────────────────────
   build-and-test:
-    name: Build & Test (DAL + BL)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
