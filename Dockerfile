@@ -70,8 +70,7 @@ COPY solution/GameLib.App/GameLib.App.csproj  ./solution/GameLib.App/
 
 # On Linux, GameLib.App.csproj only targets net10.0-android (the
 # ios/maccatalyst/windows conditions are guarded in the csproj).
-RUN dotnet restore solution/GameLib.App/GameLib.App.csproj \
-        --framework net10.0-android
+RUN dotnet restore solution/GameLib.App/GameLib.App.csproj
 
 COPY solution/ ./solution/
 
@@ -90,3 +89,4 @@ RUN dotnet build solution/GameLib.App/GameLib.App.csproj \
 # ============================================================
 FROM scratch AS apk-export
 COPY --from=android-build /src/solution/GameLib.App/bin/Debug/net10.0-android/*.apk /apk/
+
