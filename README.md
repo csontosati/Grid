@@ -77,7 +77,7 @@ every push/PR to `main`. `GameLib.App` is excluded from CI since it requires MAU
 
 _TODO: add usage instructions here._
 
-## 🤖 AI Agent Workflows (Skills)
+## AI Agent Workflows (Skills)
 
 This repository includes custom agent skills that allow AI coding assistants (like Claude Code) to seamlessly build, run, and understand the project.
 
