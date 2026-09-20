@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
@@ -9,7 +9,6 @@ using GameLib.BL.Facades.Interfaces;
 using GameLib.BL.Models;
 using GameLib.DAL.Entities;
 using GameLib.DAL.Enums;
-using Microsoft.Maui.ApplicationModel; // MainThread
 using System.Collections.ObjectModel;
 
 namespace GameLib.App.ViewModels;
@@ -18,7 +17,8 @@ public partial class GameDetailViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     LibraryFacade libraryFacade,
     INavigationService navigationService,
-    IMessengerService messengerService) : ViewModelBase(messengerService), IRecipient<GameSelectedMessage>, IRecipient<UserSelectedMessage>, IRecipient<UserUpdatedMessage>
+    IMessengerService messengerService,
+    IAlertService alertService) : ViewModelBase(messengerService), IRecipient<GameSelectedMessage>, IRecipient<UserSelectedMessage>, IRecipient<UserUpdatedMessage>
 {
     private Guid _gameId = Guid.Empty;
     private Guid UserId = Guid.Empty;
@@ -50,15 +50,12 @@ public partial class GameDetailViewModel(
         {
             var libs = await libraryFacade.GetByUserAsync(userId);
 
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                Libraries.Clear();
-                foreach (var l in libs) Libraries.Add(l);
-            });
+            Libraries.Clear();
+            foreach (var l in libs) Libraries.Add(l);
         }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Error", $"Viewing libraries unsuccessful: {ex.Message}", "OK");
+            await alertService.DisplayAsync("Error", $"Viewing libraries unsuccessful: {ex.Message}");
         }
     }
 
@@ -78,7 +75,7 @@ public partial class GameDetailViewModel(
         }
         catch (Exception ex)
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", $"Loading Game detail failed: {ex.Message}", "OK");
+            await alertService.DisplayAsync("Error", $"Loading Game detail failed: {ex.Message}");
         }
     }
 
@@ -97,7 +94,7 @@ public partial class GameDetailViewModel(
 
         if (string.IsNullOrWhiteSpace(Game.Name))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", "Game Name Cannot be left empty", "OK");
+            await alertService.DisplayAsync("Error", "Game Name Cannot be left empty");
             return;
         }
 
@@ -134,7 +131,7 @@ public partial class GameDetailViewModel(
         }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Error", $"Updated Game could not be saved: {ex.Message}", "OK");
+            await alertService.DisplayAsync("Error", $"Updated Game could not be saved: {ex.Message}");
         }
     }
 
@@ -143,13 +140,13 @@ public partial class GameDetailViewModel(
     {
         if (Game is null)
         {
-            await Application.Current.MainPage.DisplayAlert("Error", "No game selected.", "OK");
+            await alertService.DisplayAsync("Error", "No game selected.");
             return;
         }
 
         if (SelectedLibrary is null)
         {
-            await Application.Current.MainPage.DisplayAlert("Info", "Please select a library first.", "OK");
+            await alertService.DisplayAsync("Info", "Please select a library first.");
             return;
         }
 
@@ -162,12 +159,9 @@ public partial class GameDetailViewModel(
         }
         catch (Exception ex)
         {
-            await Application.Current.MainPage.DisplayAlert("Error", $"Could not add to library: {ex.Message}", "OK");
+            await alertService.DisplayAsync("Error", $"Could not add to library: {ex.Message}");
         }
-        await Application.Current!.MainPage!.DisplayAlert(
-            "Success",
-            "Game was added to your library",
-            "OK");
+        await alertService.DisplayAsync("Success", "Game was added to your library");
     }
 
     public async void Receive(GameSelectedMessage message)
