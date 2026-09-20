@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GameLib.App.Messages;
@@ -13,7 +13,8 @@ namespace GameLib.App.ViewModels;
 public partial class UserSettingsViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     LibraryFacade libraryFacade,
-    IMessengerService messengerService)
+    IMessengerService messengerService,
+    IAlertService alertService)
     : ViewModelBase(messengerService), IRecipient<UserSelectedMessage>
 {
     [ObservableProperty]
@@ -102,10 +103,7 @@ public partial class UserSettingsViewModel(
 
         if (string.IsNullOrWhiteSpace(User.UserName))
         {
-            await Application.Current!.MainPage!.DisplayAlert(
-                "Error",
-                "Username is a required field.",
-                "OK");
+            await alertService.DisplayAsync("Error", "Username is a required field.");
             return;
         }
 
@@ -115,17 +113,11 @@ public partial class UserSettingsViewModel(
 
             MessengerService.Send(new UserUpdatedMessage(UserId));
 
-            await Application.Current!.MainPage!.DisplayAlert(
-                "Success",
-                "Profile saved successfully.",
-                "OK");
+            await alertService.DisplayAsync("Success", "Profile saved successfully.");
         }
         catch (Exception ex)
         {
-            await Application.Current!.MainPage!.DisplayAlert(
-                "Error",
-                $"Failed to save profile: {ex.Message}",
-                "OK");
+            await alertService.DisplayAsync("Error", $"Failed to save profile: {ex.Message}");
         }
     }
 
@@ -135,7 +127,7 @@ public partial class UserSettingsViewModel(
         if (UserId == Guid.Empty || _isDeleted)
             return;
 
-        bool confirmed = await Application.Current!.MainPage!.DisplayAlert(
+        bool confirmed = await alertService.DisplayConfirmAsync(
             "Delete Account",
             "Are you sure you want to delete this account? This action cannot be undone.",
             "Delete", "Cancel");

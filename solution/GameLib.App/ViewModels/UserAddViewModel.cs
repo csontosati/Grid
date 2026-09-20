@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GameLib.App.Messages;
 using GameLib.App.Services;
@@ -12,7 +12,8 @@ namespace GameLib.App.ViewModels;
 public partial class UserAddViewModel(
     IFacade<UserEntity, UserListModel, UserDetailModel> userFacade,
     INavigationService navigationService,
-    IMessengerService messengerService) : ViewModelBase(messengerService)
+    IMessengerService messengerService,
+    IAlertService alertService) : ViewModelBase(messengerService)
 {
     [ObservableProperty]
     public partial UserDetailModel User { get; set; } = UserDetailModel.Empty;
@@ -28,7 +29,7 @@ public partial class UserAddViewModel(
     {
         if (string.IsNullOrWhiteSpace(User.UserName))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", "Username is a required field.", "OK");
+            await alertService.DisplayAsync("Error", "Username is a required field.");
             return;
         }
 
@@ -43,7 +44,7 @@ public partial class UserAddViewModel(
         }
         catch (Exception ex)
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", $"Account Creation Unsuccessful: {ex.Message}", "OK");
+            await alertService.DisplayAsync("Error", $"Account Creation Unsuccessful: {ex.Message}");
         }
 
         

@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GameLib.App.Messages;
 using GameLib.App.Services;
@@ -14,7 +14,8 @@ namespace GameLib.App.ViewModels;
 public partial class GameAddViewModel(
     IFacade<GameEntity, GameListModel, GameDetailModel> gameFacade,
     INavigationService navigationService,
-    IMessengerService messengerService)
+    IMessengerService messengerService,
+    IAlertService alertService)
     : ViewModelBase(messengerService)
 {
     private static readonly Guid DefaultStudioId = StudioSeeds.DefaultStudio.Id;
@@ -41,13 +42,13 @@ public partial class GameAddViewModel(
         Game.StudioName = "2k";
         if (string.IsNullOrWhiteSpace(Game.Name))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", "Game name is required.", "OK");
+            await alertService.DisplayAsync("Error", "Game name is required.");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Game.ImageUrl))
         {
-            await Application.Current!.MainPage!.DisplayAlert("Error", "Image URL is required", "OK");
+            await alertService.DisplayAsync("Error", "Image URL is required");
             return;
         }
 
@@ -64,7 +65,7 @@ public partial class GameAddViewModel(
             var inner = ex.InnerException?.InnerException?.Message
                         ?? ex.InnerException?.Message
                         ?? ex.Message;
-            await Application.Current!.MainPage!.DisplayAlert("Error", $"Game creatin failed: {inner}", "OK");
+            await alertService.DisplayAsync("Error", $"Game creatin failed: {inner}");
         }
         messengerService.Send(new GameAddedMessage());
     }
